@@ -6,15 +6,42 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2022/6 | Hexo</title>
+  <title>JUC多线程 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2022/06/index.html">
+  <meta name="description" content="消息队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JUC多线程">
+<meta property="og:url" content="http://example.com/2022/06/13/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="消息队列">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-imgimage-20220601155249249.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/image-20220703174155792.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/image-20220703174316626.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/message-queue20210507200944439.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/16ef383d3e8c9788.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/96388546.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-imgimage-20220601155210242.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-imgimage-20220601155157320.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-img2020110714492911.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-img20201107144953621.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-img20190102131128526.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-img20190102131147583.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-imgimage-20220601155128198.png">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-11/KafkaTopicPartionsLayout.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/7ce4e40b68d625676bb42c29efce046a.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/d0b44361c746593f70a6e42c298b413a.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/22e8d512d954676bdf0cc92d200af8ef.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/b82536f956f70a584c6a20c10113f225.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/22e8d512d954676bdf0cc92d200af8ef.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/0c38d08ea026e25bf3849cc7654a4e79.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/08ccce48190fe4edcbcbb223d6231876.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-imgo_kafka1png.png">
+<meta property="article:published_time" content="2022-06-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-09-15T13:56:51.156Z">
 <meta property="article:author" content="Wang XY">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-imgimage-20220601155249249.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -150,37 +177,527 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-消息队列" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JUC多线程
+    </h1>
+  
+
+        
+        <a href="/2022/06/13/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="archive-article-date">
+  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h1><p><img src="https://raw.githubusercontent.com/981207/note-img/master/note-imgimage-20220601155249249.png" alt="image-20220601155249249"></p>
+<span id="more"></span>
+<h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><h3 id="Kafka概述"><a href="#Kafka概述" class="headerlink" title="Kafka概述"></a>Kafka概述</h3><blockquote>
+<p>Kafka 是一个<strong>分布式流式处理平台</strong>。流平台具有三个关键功能</p>
+</blockquote>
+<ol>
+<li><strong>消息队列</strong>：发布和订阅消息流。这个功能类似于消息队列，这也是为什么 Kafka 也被归类为消息队列的原因。</li>
+<li><strong>容错的持久方式存储记录消息流</strong>：Kafka 会把消息持久化到磁盘，有效避免了消息丢失的风险 </li>
+<li><strong>流式处理平台</strong>：在消息发布的时候进行处理，Kafka 提供了一个完整的流式处理类库。</li>
+</ol>
+<blockquote>
+<p>Kafka 主要两大应用场景</p>
+</blockquote>
+<ol>
+<li><strong>消息队列</strong>：建立实时流数据管道，以可靠地在系统或应用程序之间获取数据。 </li>
+<li><strong>数据处理</strong>：构建实时的流数据处理程序来转换或处理数据流。</li>
+</ol>
+<blockquote>
+<p>和其他消息队列相比，Kafka 的优势在哪里？</p>
+</blockquote>
+<ol>
+<li><strong>极致的性能</strong>：基于 Scala 和 Java 语言开发的，设计中大量使用了批量处理和异步的思想，最高可以每秒处理千万级 别的消息。 </li>
+<li><strong>生态系统兼容性无可匹敌</strong>：Kafka 与周边生态系统的兼容性是最好的没有之一，尤其在大数据和流计算领域。</li>
+</ol>
+<h3 id="Kafka-的消息模型"><a href="#Kafka-的消息模型" class="headerlink" title="Kafka 的消息模型"></a>Kafka 的消息模型</h3><h4 id="队列模型❌"><a href="#队列模型❌" class="headerlink" title="队列模型❌"></a>队列模型❌</h4><p><img src="https://raw.githubusercontent.com/981207/note-img/master/image-20220703174155792.png" alt="image-20220703174155792"></p>
+<p><strong>使用队列（Queue）作为消息通信载体，满足生产者与消费者模式，一条消息只能被一个消费者使用，未被消费的消息在队列中保留直到被消费或超时。</strong> 比如：我们生产者发送 100 条消息的话，两个消费者来消费一般情况下两个消费者会按照消息发送的顺序各自消费一半（也就是你一个我一个的消费。）</p>
+<blockquote>
+<p><strong>队列模型存在的问题</strong></p>
+</blockquote>
+<p>假如我们存在这样一种情况：我们需要将生产者产生的消息分发给多个消费者，并且每个消费者都能接收到完整的消息内容。</p>
+<p>这种情况，队列模型就不好解决了。很多比较杠精的人就说：我们可以为每个消费者创建一个单独的队列，让生产者发送多份。这是一种非常愚蠢的做法，浪费资源不说，还违背了使用消息队列的目的。</p>
+<h4 id="发布-订阅模型✔️"><a href="#发布-订阅模型✔️" class="headerlink" title="发布-订阅模型✔️"></a>发布-订阅模型✔️</h4><p>发布-订阅模型主要是为了解决队列模型存在的问题。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/image-20220703174316626.png" alt="image-20220703174316626"></p>
+<p>发布订阅模型（Pub-Sub） 使用<strong>主题（Topic）</strong> 作为消息通信载体，类似于<strong>广播模式</strong>；发布者发布一条消息，该消息通过主题传递给所有的订阅者，<strong>在一条消息广播之后才订阅的用户则是收不到该条消息的</strong>。</p>
+<p><strong>在发布 - 订阅模型中，如果只有一个订阅者，那它和队列模型就基本是一样的了。所以说，发布 - 订阅模型在功能层面上是可以兼容队列模型的。</strong></p>
+<p><strong>Kafka 采用的就是发布 - 订阅模型。</strong></p>
+<blockquote>
+<p><strong>RocketMQ 的消息模型和 Kafka 基本是<span alt="wavy">完全一样</span>的。唯一的区别是 Kafka 中没有队列这个概念，与之对应的是 Partition（分区）。</strong></p>
+</blockquote>
+<h3 id="Kafka架构"><a href="#Kafka架构" class="headerlink" title="Kafka架构"></a>Kafka架构</h3><p>Kafka 将生产者发布的消息发送到 <strong>Topic（主题）</strong> 中，需要这些消息的消费者可以订阅这些 <strong>Topic（主题）</strong>，如下图所示：</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/message-queue20210507200944439.png" alt="img"></p>
+<p>上面这张图也为我们引出了，Kafka 比较重要的几个概念：</p>
+<ol>
+<li><strong>Producer（生产者）</strong> : 产生消息的一方。</li>
+<li><strong>Consumer（消费者）</strong> : 消费消息的一方。</li>
+<li><strong>Broker（代理）</strong> : 可以看作是一个独立的 Kafka 实例。多个 Kafka Broker 组成一个 Kafka Cluster。</li>
+</ol>
+<p>同时，你一定也注意到每个 Broker 中又包含了 Topic 以及 Partition 这两个重要的概念：</p>
+<ul>
+<li><strong>Topic（主题）</strong> : Producer 将消息发送到特定的主题，Consumer 通过订阅特定的 Topic(主题) 来消费消息。</li>
+<li><strong>Partition（分区）</strong> : Partition 属于 Topic 的一部分。一个 Topic 可以有多个 Partition ，并且同一 Topic 下的 Partition 可以分布在不同的 Broker 上，这也就表明一个 Topic 可以横跨多个 Broker 。这正如我上面所画的图一样。</li>
+</ul>
+<blockquote>
+<p>划重点：<strong>Kafka 中的 Partition（分区） 实际上可以对应成为消息队列中的队列。这样是不是更好理解一点</strong></p>
+</blockquote>
+<h3 id="Kafka-的多副本机制和好处"><a href="#Kafka-的多副本机制和好处" class="headerlink" title="Kafka 的多副本机制和好处"></a>Kafka 的多副本机制和好处</h3><blockquote>
+<p>多副本机制实际就是为了保证高可用性，这一点在消息队列的可用性部分有详细解释：<a href="#kafka%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7">Kafka的高可用性</a></p>
+</blockquote>
+<p>Kafka 为分区（Partition）引入了多副本（Replica）机制。分区（Partition）中的多个副本之间会有一个叫做 leader  的家伙，其他副本称为 follower。我们发送的消息会被发送到 leader 副本，然后 follower 副本才能从 leader 副本中 拉取消息进行同步。 </p>
+<p><strong>生产者和消费者只与 leader 副本交互</strong>。你可以理解为其他副本只是 leader 副本的拷贝，它们的存在<u>只是为了保证消息存储的安全性</u>。当 leader 副本发生故障时会从 follower 中选举出一个 leader，但是 follower 中如果有和 leader 同步程度达不到要求的参加不了 leader 的竞选。 </p>
+<blockquote>
+<p>带来了什么好处？ </p>
+</blockquote>
+<ul>
+<li>Kafka 通过给特定 Topic 指定多个 Partition，而各个 Partition 可以分布在不同的 Broker 上, 这样便能提供比较好的并发能力（负载均衡）</li>
+<li>Partition 可以指定对应的 Replica 数，这也极大地提高了消息存储的安全性, 提高了容灾能力，不过也相应的增加了所需要的存储空间。</li>
+</ul>
+<h3 id="ZooKeeper-在-Kafka-中的作用"><a href="#ZooKeeper-在-Kafka-中的作用" class="headerlink" title="ZooKeeper 在 Kafka 中的作用"></a>ZooKeeper 在 Kafka 中的作用</h3><p>ZooKeeper 主要为 Kafka 提供<strong>元数据的管理</strong>的功能。</p>
+<p>Zookeeper 主要为 Kafka 做了下面这些事情：</p>
+<ol>
+<li><strong>Broker 注册</strong> ：在Zookeeper上会有一个专门用来进行 Broker 服务器列表记录的节点。每个Broker在启动时， 都会到Zookeeper上进行注册，即到&#x2F;brokers&#x2F;ids 下创建属于自己的节点。每个 Broker 就会将自己的 IP 地址和端口等信息记录到该节点中去 </li>
+<li><strong>Topic 注册</strong> ：在Kafka中，同一个Topic的消息会被分成多个分区并将其分布在多个Broker上，这些分区信息及与Broker的对应关系也都是由Zookeeper在维护。比如我创建了一个名字为my-topic的主题并且它有两个分区， 对应到zookeeper中会创建这些文件夹：&#x2F;brokers&#x2F;topics&#x2F;my-topic&#x2F;Partitions&#x2F;0， &#x2F;brokers&#x2F;topics&#x2F;my-topic&#x2F;Partitions&#x2F;1</li>
+<li><strong>负载均衡</strong> ：上面也说过了Kafka通过给特定Topic指定多个 Partition, 而各个Partition可以分布在不同的 Broker 上，这样便能提供比较好的并发能力。 对于同一个 Topic 的不同 artition，Kafka 会尽力将这些 Partition 分布到不同的Broker服务器上。当生产者产生消息后也会尽量投递到不同 Broker 的 Partition 里面。当 Consumer 消 费的时候，Zookeeper 可以根据当前的 Partition 数量以及 Consumer 数量来实现动态负载均衡。</li>
+</ol>
+<h2 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h2><p><code>RocketMQ</code> 是一个 <strong>队列模型</strong> 的消息中间件，具有<strong>高性能、高可靠、高实时、分布式</strong> 的特点。它是一个采用 <code>Java</code> 语言开发的分布式的消息系统，由阿里巴巴团队开发，在2016年底贡献给 <code>Apache</code>，成为了 <code>Apache</code> 的一个顶级项目。 在阿里内部，<code>RocketMQ</code> 很好地服务了集团大大小小上千个应用，在每年的双十一当天，更有不可思议的万亿级消息通过 <code>RocketMQ</code> 流转。</p>
+<h3 id="RocketMQ的消息模型"><a href="#RocketMQ的消息模型" class="headerlink" title="RocketMQ的消息模型"></a>RocketMQ的消息模型</h3><p><code>RocketMQ</code> 中的消息模型就是按照 <strong>主题模型</strong>（<a href="#%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%9E%8B%E2%9C%94%EF%B8%8F">发布订阅模型</a>） 所实现的。</p>
+<p>其实对于主题模型的实现来说每个消息中间件的底层设计都是不一样的，就比如 <code>Kafka</code> 中的 <strong>分区</strong> ，<code>RocketMQ</code> 中的 <strong>队列</strong> ，<code>RabbitMQ</code> 中的 <code>Exchange</code> 。我们可以理解为 <strong>主题模型&#x2F;发布订阅模型</strong> 就是一个标准，那些中间件只不过照着这个标准去实现而已。</p>
+<p>所以，<code>RocketMQ</code> 中的 <strong>主题模型</strong> 到底是如何实现的呢？首先我画一张图，大家尝试着去理解一下。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/16ef383d3e8c9788.jpg" alt="img"></p>
+<p>我们可以看到在整个图中有 <code>Producer Group</code> 、<code>Topic</code> 、<code>Consumer Group</code> 三个角色，我来分别介绍一下他们。</p>
+<ul>
+<li><code>Producer Group</code> 生产者组： 代表某一类的生产者，比如我们有多个秒杀系统作为生产者，这多个合在一起就是一个 <code>Producer Group</code> 生产者组，它们一般生产相同的消息。</li>
+<li><code>Consumer Group</code> 消费者组： 代表某一类的消费者，比如我们有多个短信系统作为消费者，这多个合在一起就是一个 <code>Consumer Group</code> 消费者组，它们一般消费相同的消息。</li>
+<li><code>Topic</code> 主题： 代表一类消息，比如订单消息，物流消息等等。</li>
+</ul>
+<p>你可以看到图中生产者组中的生产者会向主题发送消息，而 <strong>主题中存在多个队列</strong>，生产者每次生产消息之后是指定主题中的某个队列发送消息的。</p>
+<p>每个主题中都有多个队列(分布在不同的 <code>Broker</code>中，如果是集群的话，<code>Broker</code>又分布在不同的服务器中)，集群消费模式下，一个消费者集群多台机器共同消费一个 <code>topic</code> 的多个队列，<strong>一个队列只会被一个消费者消费</strong>。如果某个消费者挂掉，分组内其它消费者会接替挂掉的消费者继续消费。就像上图中 <code>Consumer1</code> 和 <code>Consumer2</code> 分别对应着两个队列，而 <code>Consumer3</code> 是没有队列对应的，所以一般来讲要控制 <strong>消费者组中的消费者个数和主题中队列个数相同</strong> 。</p>
+<blockquote>
+<p>总结来说，<code>RocketMQ</code> 通过<strong>使用在一个 <code>Topic</code> 中配置多个队列并且每个队列维护每个消费者组的消费位置</strong> 实现了 <strong>主题模式&#x2F;发布订阅模式</strong> 。</p>
+</blockquote>
+<h3 id="RocketMQ架构"><a href="#RocketMQ架构" class="headerlink" title="RocketMQ架构"></a>RocketMQ架构</h3><p><code>RocketMQ</code> 技术架构中有四大角色 <code>NameServer</code> 、<code>Broker</code> 、<code>Producer</code> 、<code>Consumer</code> 。</p>
+<ul>
+<li><p><code>Broker</code>： 主要负责消息的存储、投递和查询以及服务高可用保证。说白了就是消息队列服务器嘛，生产者生产消息到 <code>Broker</code> ，消费者从 <code>Broker</code> 拉取消息并消费。</p>
+<p><strong>一个 <code>Topic</code> 分布在多个 <code>Broker</code>上，一个 <code>Broker</code> 可以配置多个 <code>Topic</code> ，它们是多对多的关系</strong>。</p>
+<p>如果某个 <code>Topic</code> 消息量很大，应该给它多配置几个队列(上文中提到了提高并发能力)，并且 <strong>尽量多分布在不同 <code>Broker</code> 上，以减轻某个 <code>Broker</code> 的压力</strong> 。</p>
+<p><code>Topic</code> 消息量都比较均匀的情况下，如果某个 <code>broker</code> 上的队列越多，则该 <code>broker</code> 压力越大。</p>
+</li>
+<li><p><code>NameServer</code>： 不知道你们有没有接触过 <code>ZooKeeper</code> 和 <code>Spring Cloud</code> 中的 <code>Eureka</code> ，它其实也是一个 <strong>注册中心</strong> ，主要提供两个功能：<strong>Broker管理</strong> 和 <strong>路由信息管理</strong> 。说白了就是 <code>Broker</code> 会将自己的信息注册到 <code>NameServer</code> 中，此时 <code>NameServer</code> 就存放了很多 <code>Broker</code> 的信息(Broker的路由表)，消费者和生产者就从 <code>NameServer</code> 中获取路由表然后照着路由表的信息和对应的 <code>Broker</code> 进行通信(生产者和消费者定期会向 <code>NameServer</code> 去查询相关的 <code>Broker</code> 的信息)。</p>
+</li>
+<li><p><code>Producer</code>： 消息发布的角色，支持分布式集群方式部署。说白了就是<strong>生产者</strong>。</p>
+</li>
+<li><p><code>Consumer</code>： 消息消费的角色，支持分布式集群方式部署。支持以push推，pull拉两种模式对消息进行消费。同时也支持集群方式和广播方式的消费，它提供实时消息订阅机制。说白了就是<strong>消费者</strong>。</p>
+</li>
+</ul>
+<h2 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h2><p>RabbitMQ 是采用 Erlang 语言实现 AMQP(Advanced Message Queuing Protocol，高级消息队列协议）的消息中间件， 它最初起源于金融系统，用于在分布式系统中存储转发消息。 </p>
+<h3 id="RabbitMQ-的特点"><a href="#RabbitMQ-的特点" class="headerlink" title="RabbitMQ 的特点"></a>RabbitMQ 的特点</h3><ul>
+<li><strong>可靠性</strong>： RabbitMQ 使用一些机制来保证消息的可靠性，如持久化、传输确认及发布确认等。 </li>
+<li><strong>灵活的路由</strong>： 在消息进入队列之前，通过交换器来路由消息。对于典型的路由功能，RabbitMQ 己经提供了一些内置 的交换器来实现。针对更复杂的路由功能，可以将多个交换器绑定在一起，也可以通过插件机制来实现自己的交换器。 这个后面会在我们将 RabbitMQ 核心概念的时候详细介绍到。 </li>
+<li><strong>扩展性</strong>： 多个 RabbitMQ 节点可以组成一个集群，也可以根据实际业务情况动态地扩展集群中节点。 </li>
+<li><strong>高可用性</strong>： 队列可以在集群中的机器上设置镜像，使得在部分节点出现问题的情况下队列仍然可用。 </li>
+<li><strong>支持多种协议</strong>： RabbitMQ 除了原生支持 AMQP 协议，还支持 STOMP、MQTT 等多种消息中间件协议。 </li>
+<li><strong>多语言客户端</strong>： RabbitMQ 几乎支持所有常用语言，比如 Java、Python、Ruby、PHP、C#、JavaScript 等。 </li>
+<li><strong>易用的管理界面</strong>： RabbitMQ 提供了一个易用的用户界面，使得用户可以监控和管理消息、集群中的节点等。在安装 RabbitMQ 的时候会介绍到，安装好 RabbitMQ 就自带管理界面。 </li>
+<li><strong>插件机制</strong>： RabbitMQ 提供了许多插件，以实现从多方面进行扩展，当然也可以编写自己的插件。感觉这个有点类似 Dubbo 的 SPI 机制。</li>
+</ul>
+<h3 id="RabbitMQ-的消息模型"><a href="#RabbitMQ-的消息模型" class="headerlink" title="RabbitMQ 的消息模型"></a>RabbitMQ 的消息模型</h3><p>RabbitMQ 整体上是一个生产者与消费者模型，主要负责接收、存储和转发消息。可以把消息传递的过程想象成：当你将一个包裹送到邮局，邮局会暂存并最终将邮件通过邮递员送到收件人的手上，RabbitMQ 就好比由邮局、邮箱和邮递员组成的一个系统。从计算机术语层面来说，RabbitMQ 模型更像是一种交换机模型。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/96388546.jpg" alt="图1-RabbitMQ 的整体模型架构"></p>
+<blockquote>
+<p>Producer(生产者) 和 Consumer(消费者)</p>
+</blockquote>
+<ul>
+<li><strong>Producer(生产者)</strong> :生产消息的一方（邮件投递者）</li>
+<li><strong>Consumer(消费者)</strong> :消费消息的一方（邮件收件人）</li>
+</ul>
+<p>消息一般由 2 部分组成：<strong>消息头</strong>（或者说是标签 Label）和 <strong>消息体</strong>。消息体也可以称为 payLoad ,消息体是不透明的，而消息头则由一系列的可选属性组成，这些属性包括 routing-key（路由键）、priority（相对于其他消息的优先权）、delivery-mode（指出该消息可能需要持久性存储）等。生产者把消息交由 RabbitMQ 后，RabbitMQ 会根据消息头把消息发送给感兴趣的 Consumer(消费者)。</p>
+<blockquote>
+<p>Exchange(交换器)</p>
+</blockquote>
+<p>在 RabbitMQ 中，消息并不是直接被投递到 <strong>Queue(消息队列)</strong> 中的，中间还必须经过 <strong>Exchange(交换器)</strong> 这一层，<strong>Exchange(交换器)</strong> 会把我们的消息分配到对应的 <strong>Queue(消息队列)</strong> 中。</p>
+<p><strong>Exchange(交换器)</strong> 用来接收生产者发送的消息并将这些消息路由给服务器中的队列中，如果路由不到，或许会返回给 <strong>Producer(生产者)</strong> ，或许会被直接丢弃掉 。这里可以将RabbitMQ中的交换器看作一个简单的实体。</p>
+<p><strong>RabbitMQ 的 Exchange(交换器) 有4种类型，不同的类型对应着不同的路由策略</strong>：<strong>direct(默认)<strong>，</strong>fanout</strong>, <strong>topic</strong>, 和 <strong>headers</strong>，不同类型的Exchange转发消息的策略有所区别。</p>
+<blockquote>
+<p>Queue(消息队列)</p>
+</blockquote>
+<p><strong>Queue(消息队列)</strong> 用来保存消息直到发送给消费者。它是消息的容器，也是消息的终点。一个消息可投入一个或多个队列。消息一直在队列里面，等待消费者连接到这个队列将其取走。</p>
+<p><strong>RabbitMQ</strong> 中消息只能存储在 <strong>队列</strong> 中，这一点和 <strong>Kafka</strong> 这种消息中间件相反。Kafka 将消息存储在 <strong>topic（主题）</strong> 这个逻辑层面，而相对应的队列逻辑只是topic实际存储文件中的位移标识。 RabbitMQ 的生产者生产消息并最终投递到队列中，消费者可以从队列中获取消息并消费。</p>
+<p><strong>多个消费者可以订阅同一个队列</strong>，这时队列中的消息会被平均分摊（Round-Robin，即轮询）给多个消费者进行处理，而不是每个消费者都收到所有的消息并处理，这样避免消息被重复消费。</p>
+<p><strong>RabbitMQ</strong> 不支持队列层面的广播消费,如果有广播消费的需求，需要在其上进行二次开发，这样会很麻烦，不建议这样做。</p>
+<blockquote>
+<p>Broker（消息中间件的服务节点）</p>
+</blockquote>
+<p>对于 RabbitMQ 来说，一个 RabbitMQ Broker 可以简单地看作一个 RabbitMQ 服务节点，或者RabbitMQ服务实例。大多数情况下也可以将一个 RabbitMQ Broker 看作一台 RabbitMQ 服务器。</p>
+<blockquote>
+<p>Exchange Types(交换器类型)</p>
+</blockquote>
+<p>RabbitMQ 常用的 Exchange Type 有 <strong>fanout</strong>、<strong>direct</strong>、<strong>topic</strong>、<strong>headers</strong> 这四种（AMQP规范里还提到两种 Exchange Type，分别为 system 与 自定义，这里不予以描述）。</p>
+<ul>
+<li><strong>fanout</strong>：路由到所有绑定（最快）</li>
+<li><strong>direct</strong>：它会把消息路由到那些 Bindingkey 与 RoutingKey <strong>完全匹配</strong>的 Queue 中</li>
+<li><strong>topic</strong>：与 direct 类型的交换器相似，也是将消息路由到 BindingKey 和 RoutingKey 相匹配的队列中，但类似于<strong>模糊匹配</strong></li>
+<li>headers(不推荐)</li>
+</ul>
+<h2 id="消息队列的优点"><a href="#消息队列的优点" class="headerlink" title="消息队列的优点"></a>消息队列的优点</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzAwNDA2OTM1Ng==&amp;mid=2453140952&amp;idx=1&amp;sn=e24f5a38531effd7964599ab9ba408d6&amp;scene=21#wechat_redirect">https://mp.weixin.qq.com/s?__biz=MzAwNDA2OTM1Ng==&amp;mid=2453140952&amp;idx=1&amp;sn=e24f5a38531effd7964599ab9ba408d6&amp;scene=21#wechat_redirect</a></p>
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p><img src="https://raw.githubusercontent.com/981207/note-img/master/note-imgimage-20220601155210242.png" alt="image-20220601155210242"></p>
+<p>比如说一个购物系统，下单的流程除了支付以外还有一些优惠券、积分、短信系统，如果这些流程是同步进行的，那么用户下一个单得等很久，那么这些流程其实都可以一起来做，可以大大减少用户等待的时间</p>
+<p>这个功能线程池也可以实现，那么消息队列还有什么优点呢？</p>
+<h3 id="解耦"><a href="#解耦" class="headerlink" title="解耦"></a>解耦</h3><p>使用消息队列解耦合，可以降低系统的耦合度。</p>
+<p><strong>简化开发</strong>：你一个订单流程，你扣积分，扣优惠券，发短信，扣库存。。。等等这么多业务要调用这么多的接口，<strong>每次加一个你要调用一个接口然后还要重新发布系统</strong>，写一次两次还好，写多了你就说：老子不干了！</p>
+<p><strong>预防故障</strong>：而且真的全部都写在一起的话，不单单是耦合这一个问题，你出问题排查也麻烦，流程里面随便一个地方出问题搞不好会影响到其他的点，小伙伴说我每个流程都<strong>try catch</strong>不就行了，相信我别这么做，这样的代码就像个<strong>定时炸弹💣</strong>，你不知道什么时候爆炸，平时不炸偏偏在你做活动的时候炸，你就领个<strong>P0故障</strong>收拾书包<strong>提前回家过年</strong>吧。</p>
+<p>你下单了，你就把你<strong>支付成功的消息告诉别的系统</strong>，他们收到了去处理就好了，你只用走完自己的流程，把自己的消息发出去，那后面要接入什么系统简单，直接订阅你发送的支付成功消息，你支付成功了我<strong>监听就好了</strong>。</p>
+<p>万一哪个系统崩溃了，不会影响其他系统的操作，比如说积分系统宕机几分钟，无伤大雅，等他恢复好了再处理消息队列里面的订单信息即可，不会影响用户下单</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/note-imgimage-20220601155157320.png" alt="image-20220601155157320"></p>
+<h3 id="削峰"><a href="#削峰" class="headerlink" title="削峰"></a>削峰</h3><p>一般情况，为了保证系统的稳定性，如果系统负载超过阈值，就会阻止用户请求，这会影响用户体验，而如果使用消息队列将请求缓存起来，等待系统处理完毕后通知用户下单完毕，这样总不能下单体验要好。</p>
+<p>比如秒杀活动，或者双十一双十二的活动，到了某一时间大量用户涌入，redis和mysql的承受能力不一样，突然的大量流量很可能把数据库搞挂了。消息队列就可以把请求先存起来，看系统的处理能力每次从队列里面拉取一部分请求出来处理，避免突然的流量高峰。</p>
+<p>双十一抢东西的时候就是，可能进去的时候还显示有库存，但等到支付的时候卡了一会，系统处理过来就会告诉你卖光了</p>
+<h2 id="消息队列带来的问题"><a href="#消息队列带来的问题" class="headerlink" title="消息队列带来的问题"></a>消息队列带来的问题</h2><p><strong>系统可用性降低</strong>：众所周知，系统引入的外部依赖越多，稳定性就越差，MQ这么重要，万一MQ挂了，整个系统都会受到影响，所以如何保证MQ的高可用非常重要</p>
+<p><strong>系统复杂度提高</strong>：系统中加入消息队列必然需要人去维护管理，还要考虑可能遇到的各种问题（重复消费、消息丢失、顺序消费…），整体来说复杂性确实大大提高了</p>
+<p><strong>一致性问题</strong>：这属于分布式服务的共性问题，优惠券、积分这些子系统本身是相互独立的，万一哪一个系统事务失败了怎么办？</p>
+<h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><h3 id="RabbitMQ的高可用性"><a href="#RabbitMQ的高可用性" class="headerlink" title="RabbitMQ的高可用性"></a>RabbitMQ的高可用性</h3><p>RabbitMQ基于主从（非分布式）实现的高可用</p>
+<p>RabbitMQ 有三种模式：单机模式、普通集群模式、镜像集群模式，单机模式肯定不会应用到开发中</p>
+<h4 id="普通集群"><a href="#普通集群" class="headerlink" title="普通集群"></a>普通集群</h4><p>创建的Queue只会放在一个RabbitMQ实例上，其他的实例都同步元数据。消费的时候，如果连接的实例没有Queue，那么当前的实例会从Queue所在的实例拉取数据</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/note-img2020110714492911.png" alt="img"></p>
+<p>这种方法并不是真的高可用，也不是真的分布式，如果Queue所在的实例挂了一样全挂。要是开启了消息持久化还能从本地备份恢复，等恢复好了再拉取数据，要是没开那就精彩了</p>
+<p>每次消费者连接到了没有Queue的实例，还要去拉取数据，数据拉取是有开销的</p>
+<p>如果不想要数据拉取开销，那每次固定连接到Queue所在的实例，那和单实例就没区别了</p>
+<p>所以这个事儿就比较尴尬了，这就<strong>没有什么所谓的高可用性</strong>，<strong>这方案主要是提高吞吐量的</strong>，就是说让集群中多个节点来服务某个 queue 的读写操作。</p>
+<h4 id="镜像集群"><a href="#镜像集群" class="headerlink" title="镜像集群"></a>镜像集群</h4><p>镜像集群才算得上高可用性</p>
+<p>每个RabbitMQ节点都有Queue的完整镜像，包含Queue的元数据和所有消息，每次写消息都会同步到所有的节点上</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/note-img20201107144953621.png" alt="img"></p>
+<p>好处在于，你任何一个机器宕机了，没事儿，其它机器（节点）还包含了这个 queue 的完整数据，别的 consumer 都可以到其它节点上去消费数据。</p>
+<p>坏处在于，第一，这个性能开销也太大了吧，消息需要同步到所有机器上，导致网络带宽压力和消耗很重！第二，这么玩儿，不是分布式的，就<strong>没有扩展性可言</strong>了，如果某个 queue 负载很重，你加机器，新增的机器也包含了这个 queue 的所有数据，并<strong>没有办法线性扩展</strong>你的 queue。</p>
+<blockquote>
+<p>RabbitMQ只是一种非常传统的消息队列而已，只不过提供了一些集群、高可用的机制而已，没有分布式的queue还是放在一个节点的，就算是镜像集群里面也是每个节点都存放完整的queue</p>
+</blockquote>
+<h3 id="RocketMQ的高可用性"><a href="#RocketMQ的高可用性" class="headerlink" title="RocketMQ的高可用性"></a>RocketMQ的高可用性</h3><p>RocketMQ分布式集群是通过Master和Slave的配合达到高可用性的</p>
+<p><strong>Master和Slave的区别</strong>：在Broker的配置文件中，参数 brokerId的值为0表明这个Broker是Master，大于0表明这个Broker是 Slave，同时brokerRole参数也会说明这个Broker是Master还是Slave。</p>
+<p>Master角色的Broker支持读和写，Slave角色的Broker仅支持读，也就是 Producer只能和Master角色的Broker连接写入消息；Consumer可以连接 Master角色的Broker，也可以连接Slave角色的Broker来读取消息。</p>
+<table>
+<thead>
+<tr>
+<th>部署方式</th>
+<th>优点</th>
+<th>缺点</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单个Master模式</td>
+<td></td>
+<td>一旦Broker里启或者宕机时，会导致整个服务不可用，不建议线上环境使用</td>
+<td></td>
+</tr>
+<tr>
+<td>多Master模式</td>
+<td>配置简单，单个Master宕机或重启维护对应用无影响，在磁盘配置为RAID10时，即使机器宕机不可恢复情况下，由于RAID10磁盘非常可靠，消息也不会丢(异步刷盘丢失少量消息，同步刷盘一条不丢)， 性能最高。</td>
+<td>单台机器宕机期问，这台机器上未被消费的消息在机器恢复之前不可订阅，消息实时性会收到影响。</td>
+<td>当使用多master无slave的集群搭建方式时，master的brokerRole配置必须为ASYNC_ MASTER。如果配置为SYNC_ MASTER，则producer发送消息时，返回值的SendStatus会一直是SLAVE_ NOT_ AVAIL ABLE。</td>
+</tr>
+<tr>
+<td>多Master多Slave模式——异步复制</td>
+<td>即使磁盘损坏，消息丢失的非常少，但消息实时性不会受影响，因为Master宕机后， 消费者仍然可以从Slave消费，此过程对应用透明，不需要人工干预，性能同多Master模式几乎一样</td>
+<td>Master宕机，磁盘损坏情况，会丢失少量信息。</td>
+<td></td>
+</tr>
+<tr>
+<td>多Master多Slave模式——同步双写</td>
+<td>数据与服务都无单点，Master宕机情况下，消息无延迟，服务可用性与数据可用性都非常高</td>
+<td>性能比异步复制模式稍低，大约低10%左右，发送单个消息的RT会稍高，目前主宕机后，备机不能自动切换为主机，后续会支持自动切换功能。</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="Kafka的高可用性"><a href="#Kafka的高可用性" class="headerlink" title="Kafka的高可用性"></a>Kafka的高可用性</h3><p>Kafka 一个最基本的架构认识：由多个 broker 组成，每个 broker 是一个节点；你创建一个 topic，这个 topic 可以划分为多个 partition，每个 partition 可以存在于不同的 broker 上，每个 partition 就放一部分数据。</p>
+<p>这就是<strong>天然的分布式消息队列</strong>，就是说一个 topic 的数据，是分<strong>散放在多个机器上的，每个机器就放一部分数据</strong>。</p>
+<blockquote>
+<p>Kafka 0.8 以前，是没有 HA 机制的</p>
+</blockquote>
+<p>就是任何一个 broker 宕机了，那个 broker 上的 partition 就废了，没法写也没法读，没有什么高可用性可言。</p>
+<p>比如说，我们假设创建了一个 topic，指定其 partition 数量是 3 个，分别在三台机器上。但是，如果第二台机器宕机了，会导致这个 topic 的 1&#x2F;3 的数据就丢了，因此这个是做不到高可用的。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/note-img20190102131128526.png" alt="kafka-before"></p>
+<blockquote>
+<p>Kafka 0.8 以后，提供了 HA 机制</p>
+</blockquote>
+<p>就是 replica（复制品） 副本机制。<strong>每个 partition 的数据都会同步到其它机器上，形成自己的多个 replica 副本</strong>。所有 replica 会选举一个 leader 出来，生产者和消费者只与 leader 副本交互。然后其他 replica 就是 follower。写的时候，leader 会负责把数据同步到所有 follower 上去，读的时候就直接读 leader 上的数据即可。</p>
+<blockquote>
+<p>为什么只能读写 leader？</p>
+</blockquote>
+<p>很简单，要是你可以随意读写每个 follower，那么就要 care 数据一致性的问题，<strong>系统复杂度太高</strong>，很容易出问题。Kafka 会均匀地将一个 partition 的所有 replica 分布在不同的机器上，这样才可以提高容错性。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/note-img20190102131147583.png" alt="kafka-after"></p>
+<p>这么搞，就有所谓的高可用性了，因为如果某个 broker 宕机了，没事儿，那个 broker上面的 partition 在其他机器上都有副本的，如果这上面有某个 partition 的 leader，那么此时会从 follower 中重新选举一个新的 leader 出来，大家继续读写那个新的 leader 即可。这就有所谓的高可用性了。</p>
+<p>写数据的时候，生产者就写 leader，然后 leader 将数据落地写本地磁盘，接着其他 follower 自己主动从 leader 来 pull 数据。一旦所有 follower 同步好数据了，就会发送 ack 给 leader，leader 收到所有 follower 的 ack 之后，就会返回写成功的消息给生产者。（当然，这只是其中一种模式，还可以适当调整这个行为）</p>
+<p>消费的时候，只会从 leader 去读，但是只有当一个消息已经被所有 follower 都同步成功返回 ack 的时候，这个消息才会被消费者读到。</p>
+<h2 id="重复消费"><a href="#重复消费" class="headerlink" title="重复消费"></a>重复消费</h2><p>重复消费的发生往往是因为网络不够发达，这个问题没有办法避免</p>
+<p><strong>如果在发送时发生消息重复</strong>：当一条消息被发送到服务端，服务端接收到了之后发送确认应答，但这条应答丢失了，发送方认为消息发送失败于是会再次发送消息，而消费者会收到两条相同的消息</p>
+<p><strong>如果在消费时发生消息重复：</strong>再下单系统中，用户下了一单，其它系统都运行无误，但其中一个系统失败了，通知消息队列重发，这时候所有的系统又收到了同样的消息</p>
+<h3 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h3><p><strong>幂等</strong>是一个数学与计算机学概念，常见于抽象代数中。在编程中一个幂等操作的特点是其<strong>任意多次执行所产生的影响均与一次执行的影响相同。</strong></p>
+<p><strong>幂等函数，或幂等方法</strong>，是指可以使用相同参数重复执行，并能获得相同结果的函数。这些函数不会影响系统状态，也不用担心重复执行会对系统造成改变。</p>
+<p>例如，“setTrue()”函数就是一个幂等函数,<strong>无论多次执行，其结果都是一样的。</strong>更复杂的操作幂等保证是利用唯一交易号(流水号)实现.</p>
+<blockquote>
+<p>如何保证幂等性？一定是分场景考虑</p>
+</blockquote>
+<p><strong>强校验：</strong></p>
+<p>涉及金钱这类比较重要的场合需要强校验</p>
+<p>比如你监听到用户支付成功的消息，你监听到了去加总消费金额是不是要调用加钱的接口，那加钱接口下面再调用一个加流水的接口，<strong>两个放在一个事务，成功一起成功失败一起失败</strong>。</p>
+<p>每次消息过来都要拿着<strong>订单号+业务场景这样的唯一标识</strong>（比是天猫双十一活动）去流水表查，看看有没有这条流水，有就直接return不要走下面的流程了，没有就执行后面的逻辑。</p>
+<p>之所以用<strong>流水表</strong>，是因为涉及到金钱这样的活动，有啥问题后面也可以去流水表<strong>对账</strong>，还有就是帮助开发人员定位问题。</p>
+<p><strong>弱校验：</strong></p>
+<p>一些不重要的场景，比如给谁发短信啥的，可以把这个id+场景唯一标识作为<strong>Redis</strong>的key，放到缓存里面失效时间看你场景，<strong>一定时间内</strong>的这个消息就去Redis判断。用KV就算消息丢了可能这样的场景也没关系，反正丢条<strong>无关痛痒</strong>的通知短信嘛</p>
+<p>或者是，你拿到这个消息做数据库的insert操作。那就容易了，给这个消息做一个唯一主键，那么就算出现重复消费的情况，就会导致主键冲突，避免数据库出现脏数据。</p>
+<p>又或者，你拿到这个消息做redis的set的操作，那就容易了，不用解决，因为你无论set几次结果都是一样的，set操作本来就算幂等操作。</p>
+<blockquote>
+<p>总的来说就是发送消息的时候带上一个唯一的id，消费者根据id看是否有消费记录，如果没有消费过就正常消费，然后写入记录；如果这个id有过消费，那就直接舍弃</p>
+</blockquote>
+<h3 id="Kafka-重复消费"><a href="#Kafka-重复消费" class="headerlink" title="Kafka-重复消费"></a>Kafka-重复消费</h3><p><strong>kafka出现消息重复消费的原因：</strong></p>
+<ul>
+<li>服务端侧已经消费的数据没有成功提交 offset（根本原因）。</li>
+<li>Kafka 侧 由于服务端处理业务时间长或者网络链接等等原因让 Kafka 认为服务假死，触发了分区 rebalance。</li>
+</ul>
+<p><strong>解决方案：</strong></p>
+<ul>
+<li>消费消息服务做<strong>幂等校验</strong>，比如 Redis 的set、MySQL 的主键等天然的幂等功能。这种方法最有效。</li>
+<li>将<code>enable.auto.commit</code>参数设置为 false，关闭自动提交，开发者在代码中手动提交 offset。那么这里会有个问题：<strong>什么时候提交offset合适</strong>？<ul>
+<li>处理完消息再提交：依旧有消息重复消费的风险，和自动提交一样</li>
+<li>拉取到消息即提交：会有消息丢失的风险。允许消息延时的场景，一般会采用这种方式。然后，通过定时任务在业务不繁忙（比如凌晨）的时候做数据兜底。</li>
+</ul>
+</li>
+</ul>
+<h2 id="顺序消费"><a href="#顺序消费" class="headerlink" title="顺序消费"></a>顺序消费</h2><h3 id="RocketMQ的顺序消费"><a href="#RocketMQ的顺序消费" class="headerlink" title="RocketMQ的顺序消费"></a>RocketMQ的顺序消费</h3><p>生产者消费者一般需要保证顺序消息的话，可能就是一个业务场景下的，比如订单的创建、支付、发货、收货。</p>
+<p>那这些东西是不是一个订单号呢？一个订单的肯定是一个订单号的说，那简单了呀，<span alt="wavy"><strong>我们需要处理的仅仅是将同一语义下的消息放入同一个队列(比如这里是同一个订单)</strong></span></p>
+<p><strong>一个topic下有多个队列</strong>，为了保证发送有序，<strong>RocketMQ</strong>提供了<strong>MessageQueueSelector</strong>队列选择机制，他有三种实现:</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/note-imgimage-20220601155128198.png" alt="image-20220601155128198"></p>
+<p>我们可使用<strong>Hash取模法</strong>，让同一个订单发送到同一个队列中，再使用同步发送，只有同个订单的创建消息发送成功，再发送支付消息。这样，我们保证了发送有序。</p>
+<p><strong>RocketMQ</strong>的topic内的队列机制，可以保证存储满足<strong>FIFO</strong>（First Input First Output 先进先出），剩下的只需要消费者顺序消费即可。<u><strong>RocketMQ</strong>仅保证顺序发送，顺序消费由消费者业务保证!!!</u></p>
+<p>整体流程如下：</p>
+<ol>
+<li><p>生产者根据消息ID将同一组消息发送到一个Queue中。</p>
+</li>
+<li><p>多个消费者同时获取Queue中的消息进行消费。</p>
+</li>
+<li><p>MQ使用<strong>分段锁</strong>保证单个Queue中的有序消费。</p>
+</li>
+</ol>
+<h3 id="Kafka-的顺序消费"><a href="#Kafka-的顺序消费" class="headerlink" title="Kafka 的顺序消费"></a>Kafka 的顺序消费</h3><p>我们在使用消息队列的过程中经常有业务场景需要严格保证消息的消费顺序，比如我们同时发了 2 个消息，这 2 个消息对应的操作分别对应的数据库操作是：</p>
+<ol>
+<li>更改用户会员等级。</li>
+<li>根据会员等级计算订单价格。</li>
+</ol>
+<p>假如这两条消息的消费顺序不一样造成的最终结果就会截然不同。</p>
+<p>我们知道 Kafka 中 Partition(分区)是真正保存消息的地方，我们发送的消息都被放在了这里。而我们的 Partition(分区) 又存在于 Topic(主题) 这个概念中，并且我们可以给特定 Topic 指定多个 Partition。</p>
+<p><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-11/KafkaTopicPartionsLayout.png" alt="img"></p>
+<p>每次添加消息到 Partition(分区) 的时候都会采用尾加法，如上图所示。 <strong>Kafka 只能为我们保证 Partition(分区) 中的消息有序。</strong></p>
+<blockquote>
+<p>消息在被追加到 Partition(分区)的时候都会分配一个特定的<strong>偏移量（offset）</strong>。Kafka 通过偏移量（offset）来保证消息在分区内的顺序性。</p>
+</blockquote>
+<p>所以，我们就有一种很简单的保证消息消费顺序的方法：</p>
+<ol>
+<li><strong>1 个 Topic 只对应一个 Partition</strong>。这样当然可以解决问题，但是破坏了 Kafka 的设计初衷。</li>
+<li>Kafka 中发送 1 条消息的时候，可以指定 topic，partition，key，data（数据） 4 个参数。如果你发送消息的时候指定了 Partition 的话，所有消息都会被发送到指定的 Partition。并且，同一个 key 的消息可以保证只发送到同一个 partition，这个我们可以采用表&#x2F;对象的 id 来作为 key 。</li>
+</ol>
+<p>总结一下，对于如何保证 Kafka 中消息消费的顺序，有了下面两种方法：</p>
+<ol>
+<li>1 个 Topic 只对应一个 Partition。</li>
+<li>（推荐）发送消息的时候指定 key&#x2F;Partition。</li>
+</ol>
+<p>当然不仅仅只有上面两种方法，上面两种方法是我觉得比较好理解的，</p>
+<h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><p>本质上来说，分布式事务就是为了保证不同数据库间的<strong>数据一致性</strong></p>
+<h3 id="2PC（两阶段提交）"><a href="#2PC（两阶段提交）" class="headerlink" title="2PC（两阶段提交）"></a>2PC（两阶段提交）</h3><p>两阶段提交是一种保证分布式系统数据一致性的协议，现在很多数据库都是采用的两阶段提交协议来完成 <strong>分布式事务</strong> 的处理。</p>
+<p>我们所需要解决的是在分布式系统中，整个调用链中，我们所有服务的数据处理要么都成功要么都失败，即所有服务的 <strong>原子性问题</strong> 。</p>
+<p>在两阶段提交中，主要涉及到两个角色，分别是协调者和参与者。</p>
+<ul>
+<li>第一阶段：当要执行一个分布式事务的时候，事务发起者首先向协调者发起事务请求，然后协调者会给所有参与者发送 <code>prepare</code> 请求（其中包括事务内容）告诉参与者你们需要执行事务了，如果能执行我发的事务内容那么就先执行但不提交，执行后请给我回复。然后参与者收到 <code>prepare</code> 消息后，他们会开始执行事务（但不提交），并将 <code>Undo</code> 和 <code>Redo</code> 信息记入事务日志中，之后参与者就向协调者反馈是否准备好了。</li>
+<li>第二阶段：第二阶段主要是协调者根据参与者反馈的情况来决定接下来是否可以进行事务的提交操作，即提交事务或者回滚事务。</li>
+</ul>
+<p>比如这个时候 <strong>所有的参与者</strong> 都返回了准备好了的消息，这个时候就进行事务的提交，协调者此时会给所有的参与者发送 <strong><code>Commit</code> 请求</strong> ，当参与者收到 <code>Commit</code> 请求的时候会执行前面执行的事务的 <strong>提交操作</strong> ，提交完毕之后将给协调者发送提交成功的响应。</p>
+<p>而如果在第一阶段并不是所有参与者都返回了准备好了的消息，那么此时协调者将会给所有参与者发送 <strong>回滚事务的 <code>rollback</code> 请求</strong>，参与者收到之后将会 <strong>回滚它在第一阶段所做的事务处理</strong> ，然后再将处理情况返回给协调者，最终协调者收到响应后便给事务发起者返回处理失败的结果。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/7ce4e40b68d625676bb42c29efce046a.png" alt="2PC流程"></p>
+<p>两段式提交只解决了各个事务的原子性问题，随之也带来了很多的问题：</p>
+<ul>
+<li><strong>单点故障问题</strong>，如果协调者挂了那么整个系统都处于不可用的状态了。</li>
+<li><strong>阻塞问题</strong>，即当协调者发送 <code>prepare</code> 请求，参与者收到之后如果能处理那么它将会进行事务的处理但并不提交，这个时候会一直占用着资源不释放，如果此时协调者挂了，那么这些资源都不会再释放了，这会极大影响性能。</li>
+<li><strong>数据不一致问题</strong>，比如当第二阶段，协调者只发送了一部分的 <code>commit</code> 请求就挂了，那么也就意味着，收到消息的参与者会进行事务的提交，而后面没收到的则不会进行事务提交，那么这时候就会产生数据不一致性问题。</li>
+</ul>
+<h3 id="3PC（三阶段提交）"><a href="#3PC（三阶段提交）" class="headerlink" title="3PC（三阶段提交）"></a>3PC（三阶段提交）</h3><p>因为2PC存在的一系列问题，比如单点，容错机制缺陷等等，从而产生了 <strong>3PC（三阶段提交）</strong> 。</p>
+<p>三阶段：</p>
+<ol>
+<li><strong>CanCommit阶段</strong>：协调者向所有参与者发送 <code>CanCommit</code> 请求，参与者收到请求后会根据自身情况查看是否能执行事务，如果可以则返回 YES 响应并进入预备状态，否则返回 NO 。</li>
+<li><strong>PreCommit阶段</strong>：协调者根据参与者返回的响应来决定是否可以进行下面的 <code>PreCommit</code> 操作。如果上面参与者返回的都是 YES，那么协调者将向所有参与者发送 <code>PreCommit</code> 预提交请求，<strong>参与者收到预提交请求后，会进行事务的执行操作，并将 <code>Undo</code> 和 <code>Redo</code> 信息写入事务日志中</strong> ，最后如果参与者顺利执行了事务则给协调者返回成功的响应。如果在第一阶段协调者收到了 <strong>任何一个 NO</strong> 的信息，或者 <strong>在一定时间内</strong> 并没有收到全部的参与者的响应，那么就会中断事务，它会向所有参与者发送中断请求（abort），参与者收到中断请求之后会立即中断事务，或者在一定时间内没有收到协调者的请求，它也会中断事务。</li>
+<li><strong>DoCommit阶段</strong>：这个阶段其实和 <code>2PC</code> 的第二阶段差不多，如果协调者收到了所有参与者在 <code>PreCommit</code> 阶段的 YES 响应，那么协调者将会给所有参与者发送 <code>DoCommit</code> 请求，<strong>参与者收到 <code>DoCommit</code> 请求后则会进行事务的提交工作</strong>，完成后则会给协调者返回响应，协调者收到所有参与者返回的事务提交成功的响应之后则完成事务。若协调者在 <code>PreCommit</code> 阶段 <strong>收到了任何一个 NO 或者在一定时间内没有收到所有参与者的响应</strong> ，那么就会进行中断请求的发送，参与者收到中断请求后则会 <strong>通过上面记录的回滚日志</strong> 来进行事务的回滚操作，并向协调者反馈回滚状况，协调者收到参与者返回的消息后，中断事务。</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/d0b44361c746593f70a6e42c298b413a.png" alt="3PC流程"></p>
+<blockquote>
+<p>这里是 <code>3PC</code> 在成功的环境下的流程图，你可以看到 <code>3PC</code> 在很多地方进行了超时中断的处理，比如协调者在指定时间内为收到全部的确认消息则进行事务中断的处理，这样能 <strong>减少同步阻塞的时间</strong> 。还有需要注意的是，**<code>3PC</code> 在 <code>DoCommit</code> 阶段参与者如未收到协调者发送的提交事务的请求，它会在一定时间内进行事务的提交<strong>。为什么这么做呢？是因为这个时候我们肯定</strong>保证了在第一阶段所有的协调者全部返回了可以执行事务的响应<strong>，这个时候我们有理由</strong>相信其他系统都能进行事务的执行和提交<strong>，所以</strong>不管**协调者有没有发消息给参与者，进入第三阶段参与者都会进行事务的提交操作。</p>
+</blockquote>
+<p>总之，<code>3PC</code> 通过一系列的超时机制很好的缓解了阻塞问题，但是最重要的一致性并没有得到根本的解决，比如在 <code>PreCommit</code> 阶段，当一个参与者收到了请求之后其他参与者和协调者挂了或者出现了网络分区，这个时候收到消息的参与者都会进行事务提交，这就会出现数据不一致性问题。</p>
+<h3 id="Paxos-算法"><a href="#Paxos-算法" class="headerlink" title="Paxos 算法"></a><code>Paxos</code> 算法</h3><p><code>Paxos</code> 算法是基于<strong>消息传递且具有高度容错特性的一致性算法</strong>，是目前公认的解决分布式一致性问题最有效的算法之一，<strong>其解决的问题就是在分布式系统中如何就某个值（决议）达成一致</strong> 。</p>
+<p>在 <code>Paxos</code> 中主要有三个角色，分别为 <code>Proposer提案者</code>、<code>Acceptor表决者</code>、<code>Learner学习者</code>。<code>Paxos</code> 算法和 <code>2PC</code> 一样，也有两个阶段，分别为 <code>Prepare</code> 和 <code>accept</code> 阶段。</p>
+<h4 id="prepare-阶段"><a href="#prepare-阶段" class="headerlink" title="prepare 阶段"></a>prepare 阶段</h4><ul>
+<li><code>Proposer提案者</code>：负责提出 <code>proposal</code>，每个提案者在提出提案时都会首先获取到一个 <strong>具有全局唯一性的、递增的提案编号N</strong>，即在整个集群中是唯一的编号 N，然后将该编号赋予其要提出的提案，在<strong>第一阶段是只将提案编号发送给所有的表决者</strong>。</li>
+<li><code>Acceptor表决者</code>：每个表决者在 <code>accept</code> 某提案后，会将该提案编号N记录在本地，这样每个表决者中保存的已经被 accept 的提案中会存在一个<strong>编号最大的提案</strong>，其编号假设为 <code>maxN</code>。每个表决者仅会 <code>accept</code> 编号大于自己本地 <code>maxN</code> 的提案，在批准提案时表决者会将以前接受过的最大编号的提案作为响应反馈给 <code>Proposer</code> 。</li>
+</ul>
+<blockquote>
+<p>下面是 <code>prepare</code> 阶段的流程图，你可以对照着参考一下。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/22e8d512d954676bdf0cc92d200af8ef.png" alt="paxos第一阶段"></p>
+<h4 id="accept-阶段"><a href="#accept-阶段" class="headerlink" title="accept 阶段"></a>accept 阶段</h4><p>当一个提案被 <code>Proposer</code> 提出后，如果 <code>Proposer</code> 收到了超过半数的 <code>Acceptor</code> 的批准（<code>Proposer</code> 本身同意），那么此时 <code>Proposer</code> 会给所有的 <code>Acceptor</code> 发送真正的提案（你可以理解为第一阶段为试探），这个时候 <code>Proposer</code> 就会发送提案的内容和提案编号。</p>
+<p>表决者收到提案请求后会再次比较本身已经批准过的最大提案编号和该提案编号，如果该提案编号 <strong>大于等于</strong> 已经批准过的最大提案编号，那么就 <code>accept</code> 该提案（此时执行提案内容但不提交），随后将情况返回给 <code>Proposer</code> 。如果不满足则不回应或者返回 NO 。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/b82536f956f70a584c6a20c10113f225.png" alt="paxos第二阶段1"></p>
+<p>当 <code>Proposer</code> 收到超过半数的 <code>accept</code> ，那么它这个时候会向所有的 <code>acceptor</code> 发送提案的提交请求。需要注意的是，因为上述仅仅是超过半数的 <code>acceptor</code> 批准执行了该提案内容，其他没有批准的并没有执行该提案内容，所以这个时候需要<strong>向未批准的 <code>acceptor</code> 发送提案内容和提案编号并让它无条件执行和提交</strong>，而对于前面已经批准过该提案的 <code>acceptor</code> 来说 <strong>仅仅需要发送该提案的编号</strong> ，让 <code>acceptor</code> 执行提交就行了。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/22e8d512d954676bdf0cc92d200af8ef.png" alt="paxos第二阶段2"></p>
+<p>而如果 <code>Proposer</code> 如果没有收到超过半数的 <code>accept</code> 那么它将会将 <strong>递增</strong> 该 <code>Proposal</code> 的编号，然后 <strong>重新进入 <code>Prepare</code> 阶段</strong> 。</p>
+<h4 id="paxos-的死循环问题"><a href="#paxos-的死循环问题" class="headerlink" title="paxos 的死循环问题"></a><code>paxos</code> 的死循环问题</h4><p>其实就有点类似于两个人吵架，小明说我是对的，小红说我才是对的，两个人据理力争的谁也不让谁🤬🤬。</p>
+<p>比如说，此时提案者 P1 提出一个方案 M1，完成了 <code>Prepare</code> 阶段的工作，这个时候 <code>acceptor</code> 则批准了 M1，但是此时提案者 P2 同时也提出了一个方案 M2，它也完成了 <code>Prepare</code> 阶段的工作。然后 P1 的方案已经不能在第二阶段被批准了（因为 <code>acceptor</code> 已经批准了比 M1 更大的 M2），所以 P1 自增方案变为 M3 重新进入 <code>Prepare</code> 阶段，然后 <code>acceptor</code> ，又批准了新的 M3 方案，它又不能批准 M2 了，这个时候 M2 又自增进入 <code>Prepare</code> 阶段。。。</p>
+<p>就这样无休无止的永远提案下去，这就是 <code>paxos</code> 算法的死循环问题。那么如何解决呢？很简单，人多了容易吵架，我现在 <strong>就允许一个能提案</strong> 就行了。</p>
+<h3 id="ZAB-Zookeeper一致性协议"><a href="#ZAB-Zookeeper一致性协议" class="headerlink" title="ZAB(Zookeeper一致性协议)"></a>ZAB(Zookeeper一致性协议)</h3><p>作为一个优秀高效且可靠的分布式协调框架，<code>ZooKeeper</code> 在解决分布式数据一致性问题时并没有直接使用 <code>Paxos</code> ，而是专门定制了一致性协议叫做 <code>ZAB(ZooKeeper Atomic Broadcast)</code> 原子广播协议，该协议能够很好地支持 <strong>崩溃恢复</strong> 。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/0c38d08ea026e25bf3849cc7654a4e79.png" alt="Zookeeper架构"></p>
+<p><code>ZAB</code> 中三个主要的角色，<code>Leader 领导者</code>、<code>Follower跟随者</code>、<code>Observer观察者</code> 。</p>
+<ul>
+<li><code>Leader</code> ：集群中 <strong>唯一的写请求处理者</strong> ，能够发起投票（投票也是为了进行写请求）。</li>
+<li><code>Follower</code>：能够接收客户端的请求，如果是读请求则可以自己处理，<strong>如果是写请求则要转发给 <code>Leader</code></strong> 。在选举过程中会参与投票，<strong>有选举权和被选举权</strong> 。</li>
+<li><code>Observer</code> ：就是没有选举权和被选举权的 <code>Follower</code> 。</li>
+</ul>
+<p>在 <code>ZAB</code> 协议中对 <code>zkServer</code>(即上面我们说的三个角色的总称) 还有两种模式的定义，分别是 <strong>消息广播</strong> 和 <strong>崩溃恢复</strong> 。</p>
+<h4 id="消息广播模式"><a href="#消息广播模式" class="headerlink" title="消息广播模式"></a>消息广播模式</h4><p>说白了就是 <code>ZAB</code> 协议是如何处理写请求的，上面我们不是说只有 <code>Leader</code> 能处理写请求嘛？那么我们的 <code>Follower</code> 和 <code>Observer</code> 是不是也需要 <strong>同步更新数据</strong> 呢？总不能数据只在 <code>Leader</code> 中更新了，其他角色都没有得到更新吧？</p>
+<p>第一步肯定需要 <code>Leader</code> 将写请求 <strong>广播</strong> 出去呀，让 <code>Leader</code> 问问 <code>Followers</code> 是否同意更新，如果超过半数以上的同意那么就进行 <code>Follower</code> 和 <code>Observer</code> 的更新（和 <code>Paxos</code> 一样）。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/08ccce48190fe4edcbcbb223d6231876.png" alt="消息广播"></p>
+<p>这两个 <code>Queue</code>是 <strong><code>ZAB</code> 需要让 <code>Follower</code> 和 <code>Observer</code> 保证顺序性</strong> 。何为顺序性，比如我现在有一个写请求A，此时 <code>Leader</code> 将请求A广播出去，因为只需要半数同意就行，所以可能这个时候有一个 <code>Follower</code> F1因为网络原因没有收到，而 <code>Leader</code> 又广播了一个请求B，因为网络原因，F1竟然先收到了请求B然后才收到了请求A，这个时候请求处理的顺序不同就会导致数据的不同，从而 <strong>产生数据不一致问题</strong> 。</p>
+<p>所以在 <code>Leader</code> 这端，它为每个其他的 <code>zkServer</code> 准备了一个 <strong>队列</strong> ，采用先进先出的方式发送消息。由于协议是 **通过 <code>TCP</code> **来进行网络通信的，保证了消息的发送顺序性，接受顺序性也得到了保证。</p>
+<p>除此之外，在 <code>ZAB</code> 中还定义了一个 <strong>全局单调递增的事务ID <code>ZXID</code></strong> ，它是一个64位long型，其中高32位表示 <code>epoch</code> 年代，低32位表示事务id。<code>epoch</code> 是会根据 <code>Leader</code> 的变化而变化的，当一个 <code>Leader</code> 挂了，新的 <code>Leader</code> 上位的时候，年代（<code>epoch</code>）就变了。而低32位可以简单理解为递增的事务id。</p>
+<p>定义这个的原因也是为了顺序性，每个 <code>proposal</code> 在 <code>Leader</code> 中生成后需要 <strong>通过其 <code>ZXID</code> 来进行排序</strong> ，才能得到处理。</p>
+<h4 id="崩溃恢复模式"><a href="#崩溃恢复模式" class="headerlink" title="崩溃恢复模式"></a>崩溃恢复模式</h4><p>说到崩溃恢复我们首先要提到 <code>ZAB</code> 中的 <code>Leader</code> 选举算法，当系统出现崩溃影响最大应该是 <code>Leader</code> 的崩溃，因为我们只有一个 <code>Leader</code> ，所以当 <code>Leader</code> 出现问题的时候我们势必需要重新选举 <code>Leader</code> 。</p>
+<p><code>Leader</code> 选举可以分为两个不同的阶段，第一个是我们提到的 <code>Leader</code> 宕机需要重新选举，第二则是当 <code>Zookeeper</code> 启动时需要进行系统的 <code>Leader</code> 初始化选举。下面我先来介绍一下 <code>ZAB</code> 是如何进行初始化选举的。</p>
+<blockquote>
+<p>Leader 启动时选举过程</p>
+</blockquote>
+<p>假设我们集群中有3台机器，那也就意味着我们需要两台以上同意（超过半数）。比如这个时候我们启动了 <code>server1</code> ，它会首先 <strong>投票给自己</strong> ，投票内容为服务器的 <code>myid</code> 和 <code>ZXID</code> ，因为初始化所以 <code>ZXID</code> 都为0，此时 <code>server1</code> 发出的投票为 (1,0)。但此时 <code>server1</code> 的投票仅为1，所以不能作为 <code>Leader</code> ，此时还在选举阶段所以整个集群处于 <strong><code>Looking</code> 状态</strong>。</p>
+<p>接着 <code>server2</code> 启动了，它首先也会将投票选给自己(2,0)，并将投票信息广播出去（<code>server1</code>也会，只是它那时没有其他的服务器了），<code>server1</code> 在收到 <code>server2</code> 的投票信息后会将投票信息与自己的作比较。**首先它会比较 <code>ZXID</code> ，<code>ZXID</code> 大的优先为 <code>Leader</code>，如果相同则比较 <code>myid</code>，<code>myid</code> 大的优先作为 <code>Leader</code>**。所以此时<code>server1</code> 发现 <code>server2</code> 更适合做 <code>Leader</code>，它就会将自己的投票信息更改为(2,0)然后再广播出去，之后<code>server2</code> 收到之后发现和自己的一样无需做更改，并且自己的 <strong>投票已经超过半数</strong> ，则 **确定 <code>server2</code> 为 <code>Leader</code>**，<code>server1</code> 也会将自己服务器设置为 <code>Following</code> 变为 <code>Follower</code>。整个服务器就从 <code>Looking</code> 变为了正常状态。</p>
+<p>当 <code>server3</code> 启动发现集群没有处于 <code>Looking</code> 状态时，它会直接以 <code>Follower</code> 的身份加入集群。</p>
+<blockquote>
+<p>Leader 挂了的时候 Leader 选举过程</p>
+</blockquote>
+<p>还是前面三个 <code>server</code> 的例子，如果在整个集群运行的过程中 <code>server2</code> 挂了，那么整个集群会如何重新选举 <code>Leader</code> 呢？其实和初始化选举差不多。</p>
+<p>首先毫无疑问的是剩下的两个 <code>Follower</code> 会将自己的状态 <strong>从 <code>Following</code> 变为 <code>Looking</code> 状态</strong> ，然后每个 <code>server</code> 会向初始化投票一样首先给自己投票（这不过这里的 <code>zxid</code> 可能不是0了，这里为了方便随便取个数字）。</p>
+<p>假设 <code>server1</code> 给自己投票为(1,99)，然后广播给其他 <code>server</code>，<code>server3</code> 首先也会给自己投票(3,95)，然后也广播给其他 <code>server</code>。<code>server1</code> 和 <code>server3</code> 此时会收到彼此的投票信息，和一开始选举一样，他们也会比较自己的投票和收到的投票（<code>zxid</code> 大的优先，如果相同那么就 <code>myid</code> 大的优先）。这个时候 <code>server1</code> 收到了 <code>server3</code> 的投票发现没自己的合适故不变，<code>server3</code> 收到 <code>server1</code> 的投票结果后发现比自己的合适于是更改投票为(1,99)然后广播出去，最后 <code>server1</code> 收到了发现自己的投票已经超过半数就把自己设为 <code>Leader</code>，<code>server3</code> 也随之变为 <code>Follower</code>。</p>
+<blockquote>
+<p><code>ZooKeeper</code> 为什么要设置奇数个结点？</p>
+</blockquote>
+<p>比如这里我们是三个，挂了一个我们还能正常工作，挂了两个我们就不能正常工作了（已经没有超过半数的节点数了，所以无法进行投票等操作了）。而假设我们现在有四个，挂了一个也能工作，<strong>但是挂了两个也不能正常工作了</strong>，这是和三个一样的，而三个比四个还少一个，带来的效益是一样的，所以 <code>Zookeeper</code> 推荐奇数个 <code>server</code> 。</p>
+<blockquote>
+<p><strong>崩溃恢复</strong> 是什么玩意？</p>
+</blockquote>
+<p>其实主要就是 <strong>当集群中有机器挂了，我们整个集群如何保证数据一致性？</strong></p>
+<p>如果只是 <code>Follower</code> 挂了，而且挂的没超过半数的时候，因为我们一开始讲了在 <code>Leader</code> 中会维护队列，所以不用担心后面的数据没接收到导致数据不一致性。</p>
+<p>如果 <code>Leader</code> 挂了那就麻烦了，我们肯定需要先暂停服务变为 <code>Looking</code> 状态然后进行 <code>Leader</code> 的重新选举（上面我讲过了），但这个就要分为两种情况了，分别是 <strong>确保已经被Leader提交的提案最终能够被所有的Follower提交</strong> 和 <strong>跳过那些已经被丢弃的提案</strong> 。</p>
+<blockquote>
+<p>确保已经被Leader提交的提案最终能够被所有的Follower提交</p>
+</blockquote>
+<p>假设 <code>Leader (server2)</code> 发送 <code>commit</code> 请求（忘了请看上面的消息广播模式），他发送给了 <code>server3</code>，然后要发给 <code>server1</code> 的时候突然挂了。这个时候重新选举的时候我们如果把 <code>server1</code> 作为 <code>Leader</code> 的话，那么肯定会产生数据不一致性，因为 <code>server3</code> 肯定会提交刚刚 <code>server2</code> 发送的 <code>commit</code> 请求的提案，而 <code>server1</code> 根本没收到所以会丢弃。</p>
+<p><strong>这个时候 <code>server1</code> 已经不可能成为 <code>Leader</code> 了，因为 <code>server1</code> 和 <code>server3</code> 进行投票选举的时候会比较 <code>ZXID</code> ，而此时 <code>server3</code> 的 <code>ZXID</code> 肯定比 <code>server1</code> 的大了</strong>。</p>
+<blockquote>
+<p>跳过那些已经被丢弃的提案</p>
+</blockquote>
+<p>假设 <code>Leader (server2)</code> 此时同意了提案N1，自身提交了这个事务并且要发送给所有 <code>Follower</code> 要 <code>commit</code> 的请求，却在这个时候挂了，此时肯定要重新进行 <code>Leader</code> 的选举，比如说此时选 <code>server1</code> 为 <code>Leader</code> （这无所谓）。但是过了一会，这个 <strong>挂掉的 <code>Leader</code> 又重新恢复了</strong> ，此时它肯定会作为 <code>Follower</code> 的身份进入集群中，需要注意的是刚刚 <code>server2</code> 已经同意提交了提案N1，但其他 <code>server</code> 并没有收到它的 <code>commit</code> 信息，所以其他 <code>server</code> 不可能再提交这个提案N1了，这样就会出现数据不一致性问题了，所以 <strong>该提案N1最终需要被抛弃掉</strong> 。</p>
+<h2 id="可靠性传输-x2F-消息丢失"><a href="#可靠性传输-x2F-消息丢失" class="headerlink" title="可靠性传输&#x2F;消息丢失"></a>可靠性传输&#x2F;消息丢失</h2><h3 id="RabbitMQ-1"><a href="#RabbitMQ-1" class="headerlink" title="RabbitMQ"></a><strong>RabbitMQ</strong></h3><p><strong>(1)生产者丢失数据</strong></p>
+<p>提供transaction和confirm模式来确保生产者不丢消息。</p>
+<ul>
+<li><strong>transaction机制</strong>：发送消息前，开启事物(channel.txSelect())，然后发送消息，如果发送过程中出现什么异常，事物就会回滚(channel.txRollback())，如果发送成功则提交事物(channel.txCommit())。然而缺点就是<strong>吞吐量下降</strong>了</li>
+<li><strong>confirm机制</strong>：所有在该信道上面发布的消息都将会被指派一个唯一的ID(从1开始)，一旦消息被投递到所有匹配的队列之后，rabbitMQ就会发送一个Ack给生产者(包含消息的唯一ID)，这就使得生产者知道消息已经正确到达目的队列了。如果rabbitMQ没能处理该消息，则会发送一个Nack消息给你，你可以进行重试操作。</li>
+</ul>
+<p><strong>(2)消息队列丢失数据</strong></p>
+<p>处理消息队列丢数据的情况，一般是<strong>开启持久化磁盘的配置</strong>。这个持久化配置可以和confirm机制配合使用，你可以在消息持久化磁盘后，再给生产者发送一个Ack信号。这样，如果消息持久化磁盘之前，rabbitMQ阵亡了，那么生产者收不到Ack信号，生产者会自动重发。</p>
+<p>那么如何持久化呢，这里顺便说一下吧，其实也很容易，就下面两步</p>
+<p>1、将queue的持久化标识durable设置为true,则代表是一个持久的队列</p>
+<p>2、发送消息的时候将deliveryMode&#x3D;2</p>
+<p>这样设置以后，rabbitMQ就算挂了，重启后也能恢复数据</p>
+<p><strong>(3)消费者丢失数据</strong></p>
+<p>消费者丢数据一般是因为采用了自动确认消息模式。这种模式下，消费者会自动确认收到信息。这时rabbitMQ会立即将消息删除，这种情况下如果消费者出现异常而没能处理该消息，就会丢失该消息。</p>
+<p>至于解决方案，采用<strong>手动确认消息</strong>即可。</p>
+<h3 id="Kafaka"><a href="#Kafaka" class="headerlink" title="Kafaka"></a>Kafaka</h3><p>这里先引一张kafka Replication的<a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/kafka-analysis-part-2/">数据流向图</a><br><img src="https://raw.githubusercontent.com/981207/note-img/master/note-imgo_kafka1png.png" alt="image"><br>Producer在发布消息到某个Partition时，先通过ZooKeeper找到该Partition的Leader，然后无论该Topic的Replication Factor为多少（也即该Partition有多少个Replica），Producer只将该消息发送到该Partition的Leader。Leader会将该消息写入其本地Log。每个Follower都从Leader中pull数据。<br>针对上述情况，得出如下分析</p>
+<p><font title="gray"><strong>(1)生产者丢数据</strong></font></p>
+<p>生产者(Producer) 调用<code>send</code>方法发送消息之后，消息可能因为网络问题并没有发送过去。</p>
+<blockquote>
+<p>消息同步方式（<strong>不推荐</strong>）</p>
+</blockquote>
+<p>所以，我们不能默认在调用<code>send</code>方法发送消息之后消息发送成功了。为了确定消息是发送成功，我们要判断消息发送的结果。但是要注意的是 Kafka 生产者(Producer) 使用 <code>send</code> 方法发送消息实际上是异步的操作，我们可以通过 <code>get()</code>方法获取调用结果，但是这样也让它变为了<strong>同步</strong>操作，示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SendResult&lt;String, Object&gt; sendResult = kafkaTemplate.send(topic, o).get();</span><br><span class="line"><span class="keyword">if</span> (sendResult.getRecordMetadata() != <span class="literal">null</span>) &#123;</span><br><span class="line">  logger.info(<span class="string">&quot;生产者成功发送消息到&quot;</span> + sendResult.getProducerRecord().topic() + <span class="string">&quot;-&gt; &quot;</span> + sendRe</span><br><span class="line">              sult.getProducerRecord().value().toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>添加回调函数的形式</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ListenableFuture&lt;SendResult&lt;String, Object&gt;&gt; future = kafkaTemplate.send(topic, o);</span><br><span class="line">future.addCallback(result -&gt; logger.info(<span class="string">&quot;生产者成功发送消息到topic:&#123;&#125; partition:&#123;&#125;的消息&quot;</span>, result.getRecordMetadata().topic(), result.getRecordMetadata().partition()),</span><br><span class="line">                   ex -&gt; logger.error(<span class="string">&quot;生产者发送消失败，原因：&#123;&#125;&quot;</span>, ex.getMessage()));</span><br></pre></td></tr></table></figure>
+
+<p>如果消息发送失败的话，我们检查失败的原因之后重新发送即可！</p>
+<ol>
+<li>第一个配置要在producer端设置<code>acks = all</code>。这个配置保证了，所有follwer同步完成后，才认为消息发送成功。（<strong>也可以解决消息队列丢数据</strong>？还是用在这里吧，下面有点矛盾）</li>
+<li>在producer端设置<code>retries=MAX</code>，一旦写入失败，则无限重试（重试次数适当大一些即可），另外，建议还要设置<strong>重试间隔</strong>，因为间隔太小的话重试的效果就不明显了，网络波动一次你3次一下子就重试完了</li>
+</ol>
+<p><font title="gray"><strong>(2)消息队列丢数据</strong></font></p>
+<p>我们知道 Kafka 为分区（Partition）引入了多副本（Replica）机制。分区（Partition）中的多个副本之间会有一个叫做 leader 的家伙，其他副本称为 follower。我们发送的消息会被发送到 leader 副本，然后 follower 副本才能从 leader 副本中拉取消息进行同步。生产者和消费者只与 leader 副本交互。你可以理解为其他副本只是 leader 副本的拷贝，它们的存在只是为了保证消息存储的安全性。</p>
+<p><strong>试想一种情况：假如 leader 副本所在的 broker 突然挂掉，那么就要从 follower 副本重新选出一个 leader ，但是 leader 的数据还有一些没有被 follower 副本的同步的话，就会造成消息丢失。</strong></p>
+<blockquote>
+<p>**设置 <code>acks = all</code>**：确保所有follower接收消息（我觉得这个和第三个有点矛盾）</p>
+</blockquote>
+<p>解决办法就是我们设置 <strong>acks &#x3D; all</strong>。acks 是 Kafka 生产者(Producer) 很重要的一个参数。</p>
+<p>acks 的默认值即为1，代表我们的消息被leader副本接收之后就算被成功发送。当我们配置 <strong>acks &#x3D; all</strong> 代表则所有副本都要接收到该消息之后该消息才算真正成功被发送。</p>
+<blockquote>
+<p>**设置 <code>replication.factor &gt;= 3</code>**：每个leader的副本数</p>
+</blockquote>
+<p>为了保证 leader 副本能有 follower 副本能同步消息，我们一般会为 topic 设置 <strong>replication.factor &gt;&#x3D; 3</strong>。这样就可以保证每个分区(partition) 至少有 3 个副本。虽然<strong>造成了数据冗余，但是带来了数据的安全性</strong>。</p>
+<blockquote>
+<p>**设置 <code>min.insync.replicas &gt; 1</code>**：消息至少发送到几个副本</p>
+</blockquote>
+<p>一般情况下我们还需要设置 <strong>min.insync.replicas&gt; 1</strong> ，这样配置代表消息至少要被写入到 2 个副本才算是被成功发送。<strong>min.insync.replicas</strong> 的默认值为 1 ，在实际生产中应尽量避免默认值 1。</p>
+<p>但是，为了保证整个 Kafka 服务的高可用性，你需要确保 <strong>replication.factor &gt; min.insync.replicas</strong> 。为什么呢？设想一下假如两者相等的话，只要是有一个副本挂掉，整个分区就无法正常工作了。这明显违反高可用性！一般推荐设置成 <code>replication.factor = min.insync.replicas + 1</code>。</p>
+<blockquote>
+<p><strong>设置<code>unclean.leader.election.enable = false</code></strong></p>
+</blockquote>
+<p><strong>Kafka 0.11.0.0版本开始 unclean.leader.election.enable 参数的默认值由原来的true 改为false</strong></p>
+<p>我们最开始也说了我们发送的消息会被发送到 leader 副本，然后 follower 副本才能从 leader 副本中拉取消息进行同步。多个 follower 副本之间的消息同步情况不一样，当我们配置了 <strong>unclean.leader.election.enable &#x3D; false</strong> 的话，<strong>当 leader 副本发生故障时就不会从 follower 副本中和 leader 同步程度达不到要求的副本中选择出 leader ，这样降低了消息丢失的可能性</strong>。</p>
+<p><font title="gray"><strong>(3)消费者丢数据</strong></font></p>
+<p>这种情况一般是自动提交了offset，然后你处理程序过程中挂了。kafka以为你处理好了。再强调一次offset是干嘛的</p>
+<p><strong>offset</strong>：指的是kafka的topic中的每个消费组消费的下标。简单的来说就是一条消息对应一个offset下标，每次消费数据的时候如果提交offset，那么下次消费就会从提交的offset加一那里开始消费。<br>比如一个topic中有100条数据，我消费了50条并且提交了，那么此时的kafka服务端记录提交的offset就是49(offset从0开始)，那么下次消费的时候offset就从50开始消费。</p>
+<p>解决方案也很简单，改成<strong>手动提交</strong>即可（这样会带来消息被<strong>重新消费</strong>的问题。比如你刚刚消费完消息之后，还没提交 offset，结果自己挂掉了，那么这个消息理论上就会被消费两次。）</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/15/Sharding-JDBC/" class="archive-article-date">
-  	<time datetime="2022-06-14T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/15/Sharding-JDBC/">Sharding-JDBC</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -193,207 +710,126 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/13/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/13/InnoDB/" class="archive-article-date">
-  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2022/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          JUC多线程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/06/13/JUC/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JUC多线程</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/13/InnoDB/">InnoDB存储引擎</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java后端//" class="article-tag-list-link color2">Java后端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">1.</span> <span class="toc-text">消息队列</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Kafka"><span class="toc-number">1.1.</span> <span class="toc-text">Kafka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Kafka%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text">Kafka概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kafka-%E7%9A%84%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">Kafka 的消息模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%9F%E5%88%97%E6%A8%A1%E5%9E%8B%E2%9D%8C"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">队列模型❌</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%9E%8B%E2%9C%94%EF%B8%8F"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">发布-订阅模型✔️</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kafka%E6%9E%B6%E6%9E%84"><span class="toc-number">1.1.3.</span> <span class="toc-text">Kafka架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kafka-%E7%9A%84%E5%A4%9A%E5%89%AF%E6%9C%AC%E6%9C%BA%E5%88%B6%E5%92%8C%E5%A5%BD%E5%A4%84"><span class="toc-number">1.1.4.</span> <span class="toc-text">Kafka 的多副本机制和好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZooKeeper-%E5%9C%A8-Kafka-%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.1.5.</span> <span class="toc-text">ZooKeeper 在 Kafka 中的作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RocketMQ"><span class="toc-number">1.2.</span> <span class="toc-text">RocketMQ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RocketMQ%E7%9A%84%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">RocketMQ的消息模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RocketMQ%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.2.</span> <span class="toc-text">RocketMQ架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RabbitMQ"><span class="toc-number">1.3.</span> <span class="toc-text">RabbitMQ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RabbitMQ-%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.3.1.</span> <span class="toc-text">RabbitMQ 的特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RabbitMQ-%E7%9A%84%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.2.</span> <span class="toc-text">RabbitMQ 的消息模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-number">1.4.</span> <span class="toc-text">消息队列的优点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5"><span class="toc-number">1.4.1.</span> <span class="toc-text">异步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E8%80%A6"><span class="toc-number">1.4.2.</span> <span class="toc-text">解耦</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8A%E5%B3%B0"><span class="toc-number">1.4.3.</span> <span class="toc-text">削峰</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.5.</span> <span class="toc-text">消息队列带来的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-number">1.6.</span> <span class="toc-text">可用性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RabbitMQ%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-number">1.6.1.</span> <span class="toc-text">RabbitMQ的高可用性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E9%9B%86%E7%BE%A4"><span class="toc-number">1.6.1.1.</span> <span class="toc-text">普通集群</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E9%9B%86%E7%BE%A4"><span class="toc-number">1.6.1.2.</span> <span class="toc-text">镜像集群</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RocketMQ%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-number">1.6.2.</span> <span class="toc-text">RocketMQ的高可用性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kafka%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-number">1.6.3.</span> <span class="toc-text">Kafka的高可用性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="toc-number">1.7.</span> <span class="toc-text">重复消费</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%82%E7%AD%89%E6%80%A7"><span class="toc-number">1.7.1.</span> <span class="toc-text">幂等性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kafka-%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="toc-number">1.7.2.</span> <span class="toc-text">Kafka-重复消费</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E6%B6%88%E8%B4%B9"><span class="toc-number">1.8.</span> <span class="toc-text">顺序消费</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RocketMQ%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%B6%88%E8%B4%B9"><span class="toc-number">1.8.1.</span> <span class="toc-text">RocketMQ的顺序消费</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kafka-%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%B6%88%E8%B4%B9"><span class="toc-number">1.8.2.</span> <span class="toc-text">Kafka 的顺序消费</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-number">1.9.</span> <span class="toc-text">分布式事务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2PC%EF%BC%88%E4%B8%A4%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4%EF%BC%89"><span class="toc-number">1.9.1.</span> <span class="toc-text">2PC（两阶段提交）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3PC%EF%BC%88%E4%B8%89%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4%EF%BC%89"><span class="toc-number">1.9.2.</span> <span class="toc-text">3PC（三阶段提交）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paxos-%E7%AE%97%E6%B3%95"><span class="toc-number">1.9.3.</span> <span class="toc-text">Paxos 算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#prepare-%E9%98%B6%E6%AE%B5"><span class="toc-number">1.9.3.1.</span> <span class="toc-text">prepare 阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#accept-%E9%98%B6%E6%AE%B5"><span class="toc-number">1.9.3.2.</span> <span class="toc-text">accept 阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#paxos-%E7%9A%84%E6%AD%BB%E5%BE%AA%E7%8E%AF%E9%97%AE%E9%A2%98"><span class="toc-number">1.9.3.3.</span> <span class="toc-text">paxos 的死循环问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZAB-Zookeeper%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.9.4.</span> <span class="toc-text">ZAB(Zookeeper一致性协议)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E5%B9%BF%E6%92%AD%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.9.4.1.</span> <span class="toc-text">消息广播模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B4%A9%E6%BA%83%E6%81%A2%E5%A4%8D%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.9.4.2.</span> <span class="toc-text">崩溃恢复模式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BC%A0%E8%BE%93-x2F-%E6%B6%88%E6%81%AF%E4%B8%A2%E5%A4%B1"><span class="toc-number">1.10.</span> <span class="toc-text">可靠性传输&#x2F;消息丢失</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RabbitMQ-1"><span class="toc-number">1.10.1.</span> <span class="toc-text">RabbitMQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kafaka"><span class="toc-number">1.10.2.</span> <span class="toc-text">Kafaka</span></a></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/13/JVM(Java%20Virtual%20Machine)/" class="archive-article-date">
-  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/13/JVM(Java%20Virtual%20Machine)/">JVM</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java后端//" class="article-tag-list-link color2">Java后端</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="archive-article-date">
-  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">JUC多线程</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java后端//" class="article-tag-list-link color2">Java后端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/13/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="archive-article-date">
-  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/13/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">JUC多线程</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java后端//" class="article-tag-list-link color2">Java后端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/13/JUC/" class="archive-article-date">
-  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/13/JUC/">JUC多线程</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java后端//" class="article-tag-list-link color2">Java后端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -416,8 +852,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2022/6 | Hexo</title>
+  <title>JUC多线程 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2022/06/index.html">
+  <meta name="description" content="操作系统操作系统概述操作系统是什么？ 是系统最基本最核心的软件，属于系统软件 控制和管理整个计算机的硬件和软件资源 合理的组织、调度计算机的工作与资源的分配 为用户和其它软件提供方便的接口和环境">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JUC多线程">
+<meta property="og:url" content="http://example.com/2022/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="操作系统操作系统概述操作系统是什么？ 是系统最基本最核心的软件，属于系统软件 控制和管理整个计算机的硬件和软件资源 合理的组织、调度计算机的工作与资源的分配 为用户和其它软件提供方便的接口和环境">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-img20200220181209621.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/a6ac2b08-3861-4e85-baa8-382287bfee9f.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/981207/note-img/master/3cd630ea-017c-488d-ad1d-732b4efeddf5.png">
+<meta property="article:published_time" content="2022-06-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-09-15T13:54:54.211Z">
 <meta property="article:author" content="Wang XY">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/981207/note-img/master/note-img20200220181209621.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -150,37 +158,347 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-操作系统" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JUC多线程
+    </h1>
+  
+
+        
+        <a href="/2022/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="archive-article-date">
+  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><h2 id="操作系统概述"><a href="#操作系统概述" class="headerlink" title="操作系统概述"></a>操作系统概述</h2><h3 id="操作系统是什么？"><a href="#操作系统是什么？" class="headerlink" title="操作系统是什么？"></a>操作系统是什么？</h3><ul>
+<li>是系统最基本最核心的软件，属于<strong>系统软件</strong></li>
+<li><strong>控制和管理</strong>整个计算机的<strong>硬件和软件资源</strong></li>
+<li>合理的<strong>组织、调度</strong>计算机的工作与资源的分配</li>
+<li>为用户和其它软件提供方便的接口和环境<br><img src="https://raw.githubusercontent.com/981207/note-img/master/note-img20200220181209621.png" alt="img"></li>
+</ul>
+<span id="more"></span>
+
+<h3 id="操作系统的功能"><a href="#操作系统的功能" class="headerlink" title="操作系统的功能"></a>操作系统的功能</h3><p><strong>处理器（CPU）管理</strong></p>
+<ul>
+<li>CPU的分配和运行都以进程（或线程）为单位，所以对CPU的管理也可以理解为对<strong>进程的管理</strong></li>
+<li>进程的管理主要包括：进程控制、进程同步、进程通信、死锁处理、处理机调度</li>
+</ul>
+<p><strong>存储器管理</strong></p>
+<ul>
+<li>为多道程序的运行提供良好的环境，方便用户使用及提高内存的利用率</li>
+<li>存储器管理主要包括：内存分配与回收、地址映射、内存保护与共享和内存扩充等功能</li>
+</ul>
+<p><strong>文件管理</strong></p>
+<ul>
+<li>计算机中所有的信息都是以文件的形式存在的，操作系统中负责文件的管理的部分称为文件系统</li>
+<li>文件管理包括：文件存储空间的管理、目录管理及文件读写管理和保护等。</li>
+</ul>
+<p><strong>设备管理</strong></p>
+<ul>
+<li>设备管理的主要任务是完成用户的I&#x2F;O请求，方便用户使用各种设备，并提高设备的利用率</li>
+<li>设备管理主要包括：包括缓存管理、设备分配、设备处理和虚拟设备等功能</li>
+</ul>
+<h3 id="操作系统的特征"><a href="#操作系统的特征" class="headerlink" title="操作系统的特征"></a>操作系统的特征</h3><h4 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h4><ul>
+<li><strong>并发</strong>：两个或多个事件在同一时间间隔内发生，这些事件在宏观上是同时发生的，在微观上是交替发生的， 操作系统的并发性指系统中同时存在着多个运行的程序</li>
+<li><strong>并行</strong>：两个或多个事件在同一时刻发生</li>
+<li>一个单核(CPU)同一时刻只能执行一个程序，因此操作系统会协调多个程序使他们交替进行（这些程序在宏观上是同时发生的，在微观上是交替进行的）</li>
+<li>操作系统是伴随着“多道程序技术出现的”，因此操作系统和并发是一同诞生的</li>
+<li>在如今的计算机中，一般都是多核cpu的，即在同一时刻可以并行执行多个程序，比如我的计算机是8核的，我的计算机可以在同一时刻并行执行8个程序，但是事实上我们计算机执行的程序并不止8个，因此并发技术是必须存在的，并发性必不可少。</li>
+</ul>
+<h4 id="共享"><a href="#共享" class="headerlink" title="共享"></a>共享</h4><p><strong>互斥共享</strong></p>
+<ul>
+<li>计算机中的某个资源在一段时间内只能允许一个进程访问，别的进程没有使用权</li>
+<li>临界资源（独占资源）：在一段时间内只允许一个进程访问的资源，计算机中大多数物理设备及某些软件中的栈、变量和表格都属于临界资源，它们被要求互斥共享</li>
+</ul>
+<p><strong>同时共享</strong></p>
+<ul>
+<li>计算机中的某个资源在一段时间内可以<code>同时</code>允许<code>多个</code>进程访问</li>
+<li>同时共享通常要求一个请求分为几个时间片段间隔的完成，即交替进行，“分时共享”</li>
+<li>这里的<code>同时</code>指在宏观上是同时的，在微观上是交替进行访问的，只是cpu处理速度很快，我们感觉不到，在宏观上感觉是在同时进行</li>
+</ul>
+<h4 id="虚拟"><a href="#虚拟" class="headerlink" title="虚拟"></a>虚拟</h4><ul>
+<li><p>虚拟是把一个物理上的实体变为若干逻辑上的对应物。</p>
+</li>
+<li><p>物理实体（前者）是实际存在的；而后者是虚的，是用户感觉上的事务</p>
+</li>
+<li><p>虚拟技术：用于实现虚拟的技术</p>
+</li>
+<li><p>虚拟处理器（CPU）：通过多道程序设计技术，采用让多道程序并发执行的方法，分时来使用一个CPU，实际物理上只有一个CPU，但是用户感觉到有多个CPU</p>
+</li>
+<li><p>虚拟存储器：从逻辑上扩充存储器容量，用户感觉到的但实际不存在的存储器</p>
+</li>
+<li><p>虚拟设备：将一台物理设备虚拟为逻辑上的多台设备，使多个用户在同一时间段内访问同一台设备，即同时共享，用户宏观上感觉是同时的，但实际上是微观交替访问同一台设备的</p>
+</li>
+<li><p>操作系统的虚拟技术科归纳为：</p>
+</li>
+<li><p>时分复用技术：如处理器的分时共享</p>
+</li>
+<li><p>空间复用技术：如虚拟存储器</p>
+</li>
+</ul>
+<h4 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h4><ul>
+<li><p>同步：后一个方法执行必须等待前面的方法执行完毕才能进行后续行为，如果方法一方法二依次调用，方法二一定要等到方法一结束才能开始</p>
+</li>
+<li><p>异步：调用后立即返回，不必等待前面的代码执行完毕就可以继续后面的行为。方法一具体交给其他线程处理，不会阻塞主线程，方法二也同样可以交给其他线程，也就不用等到方法一结束才能开始</p>
+</li>
+</ul>
+<h2 id="BIO、NIO、AIO"><a href="#BIO、NIO、AIO" class="headerlink" title="BIO、NIO、AIO"></a>BIO、NIO、AIO</h2><p>首先Java中的IO都是依赖操作系统内核进行的，我们程序中的IO读写其实调用的是操作系统内核中的read&amp;write两大系统调用。</p>
+<p>那内核是如何进行IO交互的呢?</p>
+<ol>
+<li>网卡收到经过网线传来的网络数据，并将网络数据写到内存中。</li>
+<li>当网卡把数据写入到内存后，网卡向cpu发出一个中断信号，操作系统便能得知有新数据到来，再通过网卡中断程序去处理数据。</li>
+<li>将内存中的网络数据写入到对应socket的接收缓冲区中。</li>
+<li>当接收缓冲区的数据写好之后，应用程序开始进行数据处理。</li>
+</ol>
+<p><strong>BIO</strong></p>
+<p>BIO全称是<strong>Blocking IO</strong>，是JDK1.4之 前的传统IO模型，本身是<strong>同步阻塞</strong>模式。线程发起IO请求后，一直阻塞IO，直到缓冲区数据就绪后，再进入下一步操作。针对网络通信都是一请求一应答的方式，虽然简化了上层的应用开发，但在性能和可靠性方面存在着巨大瓶颈，试想一下如果每个请求都需要新建一个线程来专门处理， 那么在高并发的场景下，机器资源很快就会被耗尽。</p>
+<p><strong>NIO</strong></p>
+<p>NIO也叫<strong>Non- Blocking IO</strong>是<strong>同步非阻塞</strong>的IO模型。线程发起IO请求后，立即返回(非阻塞IO)。同步指的是必须等待IO缓冲区内的数据就绪，而非阻塞指的是，用户线程不原地等待IO缓冲区，可以先做一些其他操作，但是要定时轮询检查IO缓冲区数据是否就绪。</p>
+<p><strong>AIO</strong></p>
+<p>AIO是真正意义上的异步非阻塞IO模型。 上述NIO实现中，需要用户线程定时轮询，去检查IO缓冲区数据是否就绪，占用应用程序线程资源，其实轮询相当于还是阻塞的，并非真正解放当前线程，因为它还是需要去查询哪些IO就绪。而真正的理想的异步非阻塞IO应该让内核系统完成，用户线程只需要告诉内核，当缓冲区就绪后，通知我或者执行我交给你的回调函数。</p>
+<blockquote>
+<p>打比方，在外面等餐厅叫号，一直坐在店门口等就是BIO，如果趁这段时间去逛了个商场，时不时在手机上看是到号了没是NIO，如果直接去逛商场等着餐厅主动打电话通知是AIO</p>
+</blockquote>
+<h2 id="用户态与内核态"><a href="#用户态与内核态" class="headerlink" title="用户态与内核态"></a>用户态与内核态</h2><p>用户态：处于用户态的 CPU 只能<strong>受限的访问内存</strong>，并且不允许访问外围设备，用户态下的 CPU <u>不允许独占</u>，也就是说 CPU 能够被其他程序获取。</p>
+<p>内核态：处于内核态的 CPU 可以<strong>访问任意的数据</strong>，包括外围设备，比如网卡、硬盘等，处于内核态的 CPU 可以从一个程序切换到另外一个程序，并且占用 CPU <u>不会发生抢占情况</u>，一般处于特权级 0 的状态我们称之为内核态。</p>
+<blockquote>
+<p>为什么要分用户态和内核态呢？</p>
+</blockquote>
+<p>总的来说，操作系统为了<strong>保证安全，不混乱</strong>，把CPU分成了特权模式和用户模式，也就是内核态和用户态，在操作敏感地带时，只能由内核操作，或者用户向内核请求，内核操作完了传给用户，也就是说用户的操作是受限的，仅能操作一些不敏感的东西。</p>
+<p>也就是说在我们运行的用户程序中，<strong>凡是与系统态级别的资源有关的操作</strong>(如文件管理、进程控制、内存管理等)，都必须通过系统调用方式向操作系统提出服务请求，并由操作系统代为完成。</p>
+<p>这些系统调用按功能大致可分为如下几类:</p>
+<ul>
+<li><p>设备管理：完成设备的请求或释放，以及设备启动等功能。</p>
+</li>
+<li><p>文件管理：完成文件的读、写、创建及删除等功能。</p>
+</li>
+<li><p>进程控制：完成进程的创建、撤销、阻塞及唤醒等功能。</p>
+</li>
+<li><p>进程通信：完成进程之间的消息传递或信号传递等功能。</p>
+</li>
+<li><p>内存管理：完成内存的分配、回收以及获取作业占用内存区大小及地址等功能。</p>
+</li>
+</ul>
+<h2 id="进程、线程、协程"><a href="#进程、线程、协程" class="headerlink" title="进程、线程、协程"></a>进程、线程、协程</h2><h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><p>进程是系统进行<strong>资源分配和调度的一个独立单位</strong>。每个进程都有自己的独立内存空间，不同进程通过进程间通信来通信。</p>
+<p>进程控制块 (Process Control Block, PCB) 描述进程的基本信息和运行状态，所谓的创建进程和撤销进程，都是指对 PCB 的操作。由于进程占据独立的内存，所以上下文进程间的切换开销(栈、寄存器、虚拟内存、文件句柄等)比较大，但相对比较稳定安全。</p>
+<p>下图显示了 4 个程序创建了 4 个进程，这 4 个进程可以并发地执行。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/a6ac2b08-3861-4e85-baa8-382287bfee9f.png" alt="img"></p>
+<h4 id="进程的状态-x2F-生命周期"><a href="#进程的状态-x2F-生命周期" class="headerlink" title="进程的状态&#x2F;生命周期"></a>进程的状态&#x2F;生命周期</h4><ul>
+<li><strong>创建状态(new)</strong> ：进程正在被创建，尚未到就绪状态。</li>
+<li><strong>就绪状态(ready)</strong> ：进程已处于准备运行状态，即进程获得了除了处理器之外的一切所需资源，一旦得到处理器资源(处理器分配的时间片)即可运行。</li>
+<li><strong>运行状态(running)</strong> ：进程正在处理器上上运行(单核 CPU 下任意时刻只有一个进程处于运行状态)。</li>
+<li><strong>阻塞状态(waiting)</strong> ：又称为等待状态，进程正在等待某一事件而暂停运行如等待某资源为可用或等待 IO 操作完成。即使处理器空闲，该进程也不能运行。</li>
+<li><strong>结束状态(terminated)</strong> ：进程正在从系统中消失。可能是进程正常结束或其他原因中断退出运行。</li>
+</ul>
+<h4 id="进程间的通信方式"><a href="#进程间的通信方式" class="headerlink" title="进程间的通信方式"></a>进程间的通信方式</h4><ol>
+<li><strong>管道&#x2F;匿名管道(Pipes)</strong> ：用于具有亲缘关系的父子进程间或者兄弟进程之间的通信。</li>
+<li><strong>有名管道(Names Pipes)</strong> : 匿名管道由于没有名字，只能用于亲缘关系的进程间通信。为了克服这个缺点，提出了有名管道。有名管道严格遵循**先进先出(first in first out)**。有名管道以磁盘文件的方式存在，可以实现本机任意两个进程通信。</li>
+<li><strong>信号(Signal)</strong> ：信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生；</li>
+<li><strong>消息队列(Message Queuing)</strong> ：消息队列是消息的链表，具有特定的格式，存放在内存中并由消息队列标识符标识。管道和消息队列的通信数据都是先进先出的原则。与管道（无名管道：只存在于内存中的文件；命名管道：存在于实际的磁盘介质或者文件系统）不同的是消息队列存放在内核中，只有在内核重启(即，操作系统重启)或者显式地删除一个消息队列时，该消息队列才会被真正的删除。消息队列可以实现消息的随机查询，消息不一定要以先进先出的次序读取,也可以按消息的类型读取.比 FIFO 更有优势。<strong>消息队列克服了信号承载信息量少，管道只能承载无格式字 节流以及缓冲区大小受限等缺点。</strong></li>
+<li><strong>信号量(Semaphores)</strong> ：信号量是一个计数器，用于多进程对共享数据的访问，信号量的意图在于进程间同步。这种通信方式主要用于解决与同步相关的问题并避免竞争条件。</li>
+<li><strong>共享内存(Shared memory)</strong> ：使得多个进程可以访问同一块内存空间，不同进程可以及时看到对方进程中对共享内存中数据的更新。这种方式需要依靠某种同步操作，如互斥锁和信号量等。可以说这是最有用的进程间通信方式。</li>
+<li><strong>套接字(Sockets)</strong> : 此方法主要用于在客户端和服务器之间通过网络进行通信。套接字是支持 TCP&#x2F;IP 的网络通信的基本操作单元，可以看做是不同主机之间的进程进行双向通信的端点，简单的说就是通信的两方的一种约定，用套接字中的相关函数来完成通信过程。</li>
+</ol>
+<h4 id="进程间的同步"><a href="#进程间的同步" class="headerlink" title="进程间的同步"></a>进程间的同步</h4><blockquote>
+<p>信号量</p>
+</blockquote>
+<p>用于进程间传递信号的一个整数值。在信号量上只有三种操作可以进行：初始化，P操作和V操作，这三种操作都是原子操作。</p>
+<p><strong>P操作(递减操作)可以用于阻塞一个进程，V操作(增加操作)可以用于解除阻塞一个进程。</strong></p>
+<p>基本原理是两个或多个进程可以通过简单的信号进行合作，一个进程可以被迫在某一位置停止，直到它接收到一个特定的信号。该信号即为信号量s。</p>
+<p>为通过信号量s传送信号，进程可执行原语semSignal(s);为通过信号量s接收信号，进程可执行原语semWait(s);如果相应的信号仍然没有发送，则进程会被阻塞，直到发送完为止。</p>
+<p><strong>可把信号量视为一个具有整数值的变量，在它之上定义三个操作：</strong></p>
+<ul>
+<li>一个信号量可以初始化为非负数</li>
+<li>semWait操作使信号量s减1.若值为负数，则执行semWait的进程被阻塞。否则进程继续执行。</li>
+<li>semSignal操作使信号量加1，若值大于或等于零，则被semWait操作阻塞的进程被解除阻塞。</li>
+</ul>
+<blockquote>
+<p>管程</p>
+</blockquote>
+<p>管程是由一个或多个过程、一个初始化序列和局部数据组成的软件模块，<strong>其主要特点如下：</strong></p>
+<ul>
+<li>局部数据变量只能被管程的过程访问，任何外部过程都不能访问。</li>
+<li>一个进程通过调用管程的一个过程进入管程。</li>
+<li>在任何时候，只能有一个进程在管程中执行，调用管程的任何其他进程都被阻塞，以等待管程可用。</li>
+</ul>
+<p>管程通过使用条件变量提供对同步的支持，这些条件变量包含在管程中，并且只有在管程中才能被访问。有两个函数可以操作条件变量：</p>
+<ul>
+<li>cwait(c)：调用进程的执行在条件c上阻塞，管程现在可被另一个进程使用。</li>
+<li>csignal(c)：恢复执行在cwait之后因为某些条件而阻塞的进程。如果有多个这样的进程，选择其中一个；如果没有这样的进程，什么以不做。</li>
+</ul>
+<blockquote>
+<p>消息传递</p>
+</blockquote>
+<p><strong>消息传递的实际功能以一对原语的形式提供：</strong></p>
+<ul>
+<li>send(destination,message)</li>
+<li>receive(source,message)</li>
+</ul>
+<p>这是进程间进程消息传递所需要的最小操作集。</p>
+<p>一个进程以消息的形式给另一个指定的目标进程发送消息；</p>
+<p>进程通过执行receive原语接收消息，receive原语中指明发送消息的源进程和消息。</p>
+<h4 id="进程的调度算法"><a href="#进程的调度算法" class="headerlink" title="进程的调度算法"></a>进程的调度算法</h4><ul>
+<li><strong>先到先服务(FCFS)调度算法</strong> : 从就绪队列中选择一个最先进入该队列的进程为之分配资源，使它立即执行并一直执行到完成或发生某事件而被阻塞放弃占用 CPU 时再重新调度。</li>
+<li><strong>短作业优先(SJF)的调度算法</strong> : 从就绪队列中选出一个估计运行时间最短的进程为之分配资源，使它立即执行并一直执行到完成或发生某事件而被阻塞放弃占用 CPU 时再重新调度。</li>
+<li><strong>时间片轮转调度算法</strong> : 时间片轮转调度是一种最古老，最简单，最公平且使用最广的算法，又称 RR(Round robin)调度。每个进程被分配一个时间段，称作它的时间片，即该进程允许运行的时间。</li>
+<li><strong>多级反馈队列调度算法</strong> ：前面介绍的几种进程调度的算法都有一定的局限性。如<strong>短进程优先的调度算法，仅照顾了短进程而忽略了长进程</strong> 。多级反馈队列调度算法既能使高优先级的作业得到响应又能使短作业（进程）迅速完成。，因而它是目前<strong>被公认的一种较好的进程调度算法</strong>，UNIX 操作系统采取的便是这种调度算法。</li>
+<li><strong>优先级调度</strong> ： 为每个流程分配优先级，首先执行具有最高优先级的进程，依此类推。具有相同优先级的进程以 FCFS 方式执行。可以根据内存要求，时间要求或任何其他资源要求来确定优先级。</li>
+</ul>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><p>线程是<strong>进程的一个实体，是CPU调度和分派的基本单位</strong>，它是比进程更小的能独立运行的单位。</p>
+<p>线程拥有自己的程序计数器、本地方法栈、虚拟机栈，同一个进程中的多个线程可以共享进程所拥有的资源(堆与方法区)。线程间通信主要通过共享内存，上下文切换很快，资源开销较少，但<u>相比进程不够稳定容易丢失数据。</u></p>
+<p>当一个进程中的线程挂掉之后(非正常退出)，就会导致该线程占有的资源永远无法释放，从而影响其他线程的正常工作。</p>
+<p>QQ 和浏览器是两个进程，浏览器进程里面有很多线程，例如 HTTP 请求线程、事件响应线程、渲染线程等等，线程的并发执行使得在浏览器中点击一个新链接从而发起 HTTP 请求时，浏览器还可以响应用户的其它事件。</p>
+<p><img src="https://raw.githubusercontent.com/981207/note-img/master/3cd630ea-017c-488d-ad1d-732b4efeddf5.png" alt="img"></p>
+<h4 id="线程间的同步的方式"><a href="#线程间的同步的方式" class="headerlink" title="线程间的同步的方式"></a>线程间的同步的方式</h4><p>线程同步是两个或多个共享关键资源的线程的并发执行。应该同步线程以避免关键的资源使用冲突。操作系统一般有下面三种线程同步的方式：</p>
+<ol>
+<li><p>同步方法：Synchronized修饰的同步方法；Synchronized也可以修饰静态方法，相当于锁住当前类</p>
+</li>
+<li><p>同步代码块：Synchronized修饰的同步代码块；</p>
+</li>
+<li><p>volatile关键字实现线程同步，相当于告诉虚拟机，该与变量可能被修改，因此每次使用该域都需要重新计算，而不是从寄存器中取出数据。从而实现线程的同步。</p>
+</li>
+<li><p>使用可重入锁。使用Reentrantlock类定义锁，其中lock()开启锁，unlock()关闭锁，要注意及时关闭所，不然会进入死锁状态。</p>
+</li>
+<li><p>使用ThreadLocal类来管理，该类管理的每个线程中都有自己的副本，副本之间相互独立，因此获得的结果和其他不同。</p>
+</li>
+<li><p>使用阻塞队列实现线程同步。</p>
+</li>
+<li><p>使用原子类实现线程同步。</p>
+</li>
+</ol>
+<h3 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h3><p><strong>协程是一种用户态的轻量级线程，协程的调度完全由用户控制</strong>。协程拥有自己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其他地方，在切回来的时候，恢复先前保存的寄存器上下文和栈，直接操作栈则基本没有内核切换的开销，可以不加锁的访问全局变量，所以上下文的切换非常快。</p>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><p>操作系统的内存管理主要负责内存的分配与回收（malloc 函数：申请内存，free 函数：释放内存），另外地址转换也就是将逻辑地址转换成相应的物理地址等功能也是操作系统内存管理做的事情。</p>
+<h3 id="内存管理机制"><a href="#内存管理机制" class="headerlink" title="内存管理机制"></a>内存管理机制</h3><p>简单分为<strong>连续分配管理方式</strong>和<strong>非连续分配管理方式</strong>这两种。连续分配管理方式是指为一个用户程序分配一个连续的内存空间，常见的如 <strong>块式管理</strong> 。同样地，非连续分配管理方式允许一个程序使用的内存分布在离散或者说不相邻的内存中，常见的如<strong>页式管理</strong> 和 <strong>段式管理</strong>。</p>
+<ol>
+<li><strong>块式管理</strong> ： 远古时代的计算机操作系统的内存管理方式。将内存分为几个固定大小的块，每个块中只包含一个进程。如果程序运行需要内存的话，操作系统就分配给它一块，如果程序运行只需要很小的空间的话，分配的这块内存很大一部分几乎被浪费了。这些在每个块中未被利用的空间，我们称之为碎片。</li>
+<li><strong>页式管理</strong> ：把主存分为大小相等且固定的一页一页的形式，页较小，相比于块式管理的划分粒度更小，提高了内存利用率，减少了碎片。页式管理通过页表对应逻辑地址和物理地址。</li>
+<li><strong>段式管理</strong> ： 页式管理虽然提高了内存利用率，但是页式管理其中的页并无任何实际意义。 段式管理把主存分为一段段的，段是有实际意义的，每个段定义了一组逻辑信息，例如,有主程序段 MAIN、子程序段 X、数据段 D 及栈段 S 等。 段式管理通过段表对应逻辑地址和物理地址。</li>
+<li><strong>段页式管理</strong>：段页式管理机制结合了段式管理和页式管理的优点。简单来说段页式管理机制就是把主存先分成若干段，每个段又分成若干页，也就是说 <strong>段页式管理机制</strong> 中段与段之间以及段的内部的都是离散的。</li>
+</ol>
+<blockquote>
+<p>简单来说：页是物理单位，段是逻辑单位。分页可以有效提高内存利用率，分段可以更好满足用户需求。</p>
+</blockquote>
+<h3 id="快表和多级页表"><a href="#快表和多级页表" class="headerlink" title="快表和多级页表"></a>快表和多级页表</h3><blockquote>
+<p>快表和多级页表，这两个东西分别解决了<strong>页表管理</strong>中很重要的两个问题</p>
+</blockquote>
+<ol>
+<li>虚拟地址到物理地址的转换要快。</li>
+<li>解决虚拟地址空间大，页表也会很大的问题。</li>
+</ol>
+<h4 id="快表"><a href="#快表" class="headerlink" title="快表"></a>快表</h4><p>为了提高虚拟地址到物理地址的转换速度，操作系统在 <strong>页表方案</strong> 基础之上引入了 <strong>快表</strong> 来加速虚拟地址到物理地址的转换。我们可以把快表理解为<strong>一种特殊的高速缓冲存储器</strong>（Cache），其中的内容是页表的一部分或者全部内容。作为页表的 Cache，它的作用与页表相似，但是提高了访问速率。由于采用页表做地址转换，读写内存数据时 CPU 要访问两次主存。有了快表，有时只要访问一次高速缓冲存储器，一次主存，这样可加速查找并提高指令执行速度。</p>
+<blockquote>
+<p>使用快表之后的地址转换流程</p>
+</blockquote>
+<ol>
+<li>根据虚拟地址中的页号查快表；</li>
+<li>如果该页在快表中，直接从快表中读取相应的物理地址；</li>
+<li>如果该页不在快表中，就访问内存中的页表，再从页表中得到物理地址，同时将页表中的该映射表项添加到快表中；</li>
+<li>当快表填满后，又要登记新页时，就按照一定的淘汰策略淘汰掉快表中的一个页</li>
+</ol>
+<h4 id="多级页表"><a href="#多级页表" class="headerlink" title="多级页表"></a>多级页表</h4><p>引入多级页表的主要目的是为了避免把全部页表一直放在内存中占用过多空间，特别是那些根本就不需要的页表就不需要保留在内存中。</p>
+<h3 id="分页机制和分段机制"><a href="#分页机制和分段机制" class="headerlink" title="分页机制和分段机制"></a>分页机制和分段机制</h3><ol>
+<li>共同点<ul>
+<li>分页机制和分段机制都是为了<strong>提高内存利用率</strong>，减少内存碎片。</li>
+<li>页和段都是<strong>离散存储</strong>的，所以两者都是离散分配内存的方式。但是，每个页和段中的内存是连续的。</li>
+</ul>
+</li>
+<li>区别<ul>
+<li>页的大小是固定的，由操作系统决定；而段的大小不固定，取决于我们当前运行的程序。</li>
+<li>分页仅仅是为了满足操作系统内存管理的需求，而段是逻辑信息的单位，在程序中可以体现为代码段，数据段，能够更好满足用户的需要。</li>
+</ul>
+</li>
+</ol>
+<h3 id="逻辑-虚拟-地址和物理地址"><a href="#逻辑-虚拟-地址和物理地址" class="headerlink" title="逻辑(虚拟)地址和物理地址"></a>逻辑(虚拟)地址和物理地址</h3><p>我们编程一般只有可能和逻辑地址打交道，比如在 C 语言中，<strong>指针里面存储的数值</strong>就可以理解成为内存里的一个地址，这个地址也就是我们说的逻辑地址，逻辑地址由操作系统决定。<strong>物理地址指的是真实物理内存中地址</strong>，更具体一点来说就是内存地址寄存器中的地址。物理地址是内存单元真正的地址。</p>
+<h4 id="CPU寻址-虚拟寻址"><a href="#CPU寻址-虚拟寻址" class="headerlink" title="CPU寻址-虚拟寻址"></a>CPU寻址-虚拟寻址</h4><p>现代处理器使用的是一种称为 <strong>虚拟寻址(Virtual Addressing)</strong> 的寻址方式。<strong>使用虚拟寻址，CPU 需要将虚拟地址翻译成物理地址，这样才能访问到真实的物理内存。</strong> 实际上完成虚拟地址转换为物理地址转换的硬件是 CPU 中含有一个被称为 <strong>内存管理单元（Memory Management Unit, MMU）</strong> 的硬件</p>
+<blockquote>
+<p>通过虚拟地址访问内存有以下优势</p>
+</blockquote>
+<ul>
+<li>程序可以使用一系列相邻的虚拟地址来访问物理内存中不相邻的大内存缓冲区。</li>
+<li>程序可以使用一系列虚拟地址来访问大于可用物理内存的内存缓冲区。当物理内存的供应量变小时，内存管理器会将物理内存页（通常大小为 4 KB）保存到磁盘文件。数据或代码页会根据需要在物理内存与磁盘之间移动。</li>
+<li>不同进程使用的虚拟地址彼此隔离。一个进程中的代码无法更改正在由另一进程或操作系统使用的物理内存。</li>
+</ul>
+<h5 id="为什么要有虚拟地址空间呢？"><a href="#为什么要有虚拟地址空间呢？" class="headerlink" title="为什么要有虚拟地址空间呢？"></a><strong>为什么要有虚拟地址空间呢？</strong></h5><p>先从没有虚拟地址空间的时候说起吧！没有虚拟地址空间的时候，<strong>程序直接访问和操作的都是物理内存</strong> 。但是这样有什么问题呢？</p>
+<ol>
+<li>用户程序可以访问任意内存，寻址内存的每个字节，这样就很容易（有意或者无意）<u>破坏操作系统</u>，造成操作系统崩溃。</li>
+<li>想要同时运行多个程序特别困难，比如你想同时运行一个微信和一个 QQ 音乐都不行。为什么呢？举个简单的例子：微信在运行的时候给内存地址 1xxx 赋值后，QQ 音乐也同样给内存地址 1xxx 赋值，那么 QQ 音乐对内存的赋值就会覆盖微信之前所赋的值，这就造成了微信这个程序就会崩溃。</li>
+</ol>
+<p><strong>总结来说：如果直接把物理地址暴露出来的话会带来严重问题，比如可能对操作系统造成伤害以及给同时运行多个程序造成困难。</strong></p>
+<h2 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h2><p>这个在我们平时使用电脑特别是 Windows 系统的时候太常见了。很多时候我们使用了很多占内存的软件，这些软件占用的内存可能已经远远超出了我们电脑本身具有的物理内存。<strong>为什么可以这样呢？</strong> 正是因为 <strong>虚拟内存</strong> 的存在，通过 <strong>虚拟内存</strong> 可以让程序可以拥有超过系统物理内存大小的可用内存空间。另外，<strong>虚拟内存为每个进程提供了一个一致的、私有的地址空间，它让每个进程产生了一种自己在独享主存的错觉（每个进程拥有一片连续完整的内存空间）</strong>。这样会更加有效地管理内存并减少出错。</p>
+<p><strong>虚拟内存</strong>是计算机系统内存管理的一种技术，我们可以手动设置自己电脑的虚拟内存。不要单纯认为虚拟内存只是“使用硬盘空间来扩展内存“的技术。<strong>虚拟内存的重要意义是它定义了一个连续的虚拟地址空间</strong>，并且 <strong>把内存扩展到硬盘空间</strong>。</p>
+<h3 id="局部性原理"><a href="#局部性原理" class="headerlink" title="局部性原理"></a>局部性原理</h3><p>局部性原理是虚拟内存技术的基础，正是因为程序运行具有局部性原理，才可以只装入部分程序到内存就开始运行。局部性原理表现在以下两个方面：</p>
+<ol>
+<li><strong>时间局部性</strong> ：如果程序中的某条指令一旦执行，不久以后该指令可能再次执行；如果某数据被访问过，不久以后该数据可能再次被访问。产生时间局部性的典型原因，是由于在程序中存在着大量的循环操作。</li>
+<li><strong>空间局部性</strong> ：一旦程序访问了某个存储单元，在不久之后，其附近的存储单元也将被访问，即程序在一段时间内所访问的地址，可能集中在一定的范围之内，这是因为指令通常是顺序存放、顺序执行的，数据也一般是以向量、数组、表等形式簇聚存储的。</li>
+</ol>
+<h3 id="虚拟存储器-x2F-虚拟内存"><a href="#虚拟存储器-x2F-虚拟内存" class="headerlink" title="虚拟存储器&#x2F;虚拟内存"></a>虚拟存储器&#x2F;虚拟内存</h3><p>基于局部性原理，在程序装入时，可以将程序的一部分装入内存，而将其他部分留在外存，就可以启动程序执行。由于外存往往比内存大很多，所以我们运行的软件的内存大小实际上是可以比计算机系统实际的内存大小大的。在程序执行过程中，当所访问的信息不在内存时，由操作系统将所需要的部分调入内存，然后继续执行程序。另一方面，操作系统将内存中暂时不使用的内容换到外存上，从而腾出空间存放将要调入内存的信息。这样，计算机好像为用户提供了一个比实际内存大得多的存储器——<strong>虚拟存储器</strong>。</p>
+<p>实际上，我觉得虚拟内存同样是一种时间换空间的策略，你用 CPU 的计算时间，页的调入调出花费的时间，换来了一个虚拟的更大的空间来支持程序的运行。不得不感叹，程序世界几乎不是时间换空间就是空间换时间。</p>
+<h3 id="虚拟内存的技术实现"><a href="#虚拟内存的技术实现" class="headerlink" title="虚拟内存的技术实现"></a>虚拟内存的技术实现</h3><p><strong>虚拟内存的实现需要建立在离散分配的内存管理方式的基础上。</strong> 虚拟内存的实现有以下三种方式：</p>
+<ol>
+<li><strong>请求分页存储管理</strong> ：建立在分页管理之上，为了支持虚拟存储器功能而增加了请求调页功能和页面置换功能。请求分页是目前最常用的一种实现虚拟存储器的方法。请求分页存储管理系统中，在作业开始运行之前，仅装入当前要执行的部分段即可运行。假如在作业运行的过程中发现要访问的页面不在内存，则由处理器通知操作系统按照对应的页面置换算法将相应的页面调入到主存，同时操作系统也可以将暂时不用的页面置换到外存中。</li>
+<li><strong>请求分段存储管理</strong> ：建立在分段存储管理之上，增加了请求调段功能、分段置换功能。请求分段储存管理方式就如同请求分页储存管理方式一样，在作业开始运行之前，仅装入当前要执行的部分段即可运行；在执行过程中，可使用请求调入中断动态装入要访问但又不在内存的程序段；当内存空间已满，而又需要装入新的段时，根据置换功能适当调出某个段，以便腾出空间而装入新的段。</li>
+<li><strong>请求段页式存储管理</strong></li>
+</ol>
+<blockquote>
+<p>这里多说一下？很多人容易搞混请求分页与分页存储管理，两者有何不同呢？</p>
+</blockquote>
+<p>请求分页存储管理建立在分页管理之上。他们的根本区别是<strong>是否将程序全部所需的全部地址空间都装入主存</strong>，这也是请求分页存储管理可以提供虚拟内存的原因，我们在上面已经分析过了。</p>
+<p>它们之间的根本区别在于<strong>是否将一作业的全部地址空间同时装入主存</strong>。请求分页存储管理不要求将作业全部地址空间同时装入主存。基于这一点，请求分页存储管理可以提供虚存，而分页存储管理却不能提供虚存。</p>
+<p>不管是上面那种实现方式，我们一般都需要：</p>
+<ol>
+<li>一定容量的内存和外存：在载入程序的时候，只需要将程序的一部分装入内存，而将其他部分留在外存，然后程序就可以执行了；</li>
+<li><strong>缺页中断</strong>：如果<strong>需执行的指令或访问的数据尚未在内存</strong>（称为缺页或缺段），则由处理器通知操作系统将相应的页面或段<strong>调入到内存</strong>，然后继续执行程序；</li>
+<li><strong>虚拟地址空间</strong> ：逻辑地址到物理地址的变换。</li>
+</ol>
+<h3 id="缺页中断–页面置换算法"><a href="#缺页中断–页面置换算法" class="headerlink" title="缺页中断–页面置换算法"></a>缺页中断–页面置换算法</h3><p>地址映射过程中，若在页面中发现所要访问的页面不在内存中，则发生缺页中断 。</p>
+<blockquote>
+<p><strong>缺页中断</strong> 就是要访问的<strong>页</strong>不在主存，需要操作系统将其调入主存后再进行访问。 在这个时候，被内存映射的文件实际上成了一个分页交换文件。</p>
+</blockquote>
+<p>当发生缺页中断时，如果当前内存中并没有空闲的页面，操作系统就必须在内存选择一个页面将其移出内存，以便为即将调入的页面让出空间。<strong>用来选择淘汰哪一页的规则叫做页面置换算法</strong>，我们可以把页面置换算法看成是淘汰页面的规则。</p>
+<ul>
+<li><strong>OPT 页面置换算法（最佳页面置换算法）</strong> ：最佳(Optimal, OPT)置换算法所选择的被淘汰页面将是以后永不使用的，或者是在最长时间内不再被访问的页面，这样可以保证获得最低的缺页率。但由于人们目前无法预知进程在内存下的若千页面中哪个是未来最长时间内不再被访问的，因而该算法无法实现。一般作为衡量其他置换算法的方法。</li>
+<li><strong>FIFO（First In First Out） 页面置换算法（先进先出页面置换算法）</strong> : 总是淘汰最先进入内存的页面，即选择在内存中驻留时间最久的页面进行淘汰。</li>
+<li><strong>LRU （Least Recently Used）页面置换算法（最近最久未使用页面置换算法）</strong> ：LRU 算法赋予每个页面一个访问字段，用来记录一个页面自上次被访问以来所经历的时间 T，当须淘汰一个页面时，选择现有页面中其 T 值最大的，即最近最久未使用的页面予以淘汰。</li>
+<li><strong>LFU （Least Frequently Used）页面置换算法（最少使用页面置换算法）</strong> : 该置换算法选择在之前时期使用最少的页面作为淘汰页。</li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/15/Sharding-JDBC/" class="archive-article-date">
-  	<time datetime="2022-06-14T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/15/Sharding-JDBC/">Sharding-JDBC</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -193,207 +511,126 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/13/InnoDB/" class="archive-article-date">
-  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2022/06/13/JVM(Java%20Virtual%20Machine)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          JVM
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/06/13/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JUC多线程</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/13/InnoDB/">InnoDB存储引擎</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java后端//" class="article-tag-list-link color2">Java后端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">操作系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">操作系统概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.1.1.</span> <span class="toc-text">操作系统是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.2.</span> <span class="toc-text">操作系统的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%89%B9%E5%BE%81"><span class="toc-number">1.1.3.</span> <span class="toc-text">操作系统的特征</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">并发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">共享</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">虚拟</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5"><span class="toc-number">1.1.3.4.</span> <span class="toc-text">异步</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BIO%E3%80%81NIO%E3%80%81AIO"><span class="toc-number">1.2.</span> <span class="toc-text">BIO、NIO、AIO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E4%B8%8E%E5%86%85%E6%A0%B8%E6%80%81"><span class="toc-number">1.3.</span> <span class="toc-text">用户态与内核态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E3%80%81%E5%8D%8F%E7%A8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">进程、线程、协程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">进程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81-x2F-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">进程的状态&#x2F;生命周期</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">进程间的通信方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E5%90%8C%E6%AD%A5"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">进程间的同步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="toc-number">1.4.1.4.</span> <span class="toc-text">进程的调度算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.4.2.</span> <span class="toc-text">线程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">线程间的同步的方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text">协程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">1.5.</span> <span class="toc-text">内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6"><span class="toc-number">1.5.1.</span> <span class="toc-text">内存管理机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E8%A1%A8%E5%92%8C%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8"><span class="toc-number">1.5.2.</span> <span class="toc-text">快表和多级页表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BF%AB%E8%A1%A8"><span class="toc-number">1.5.2.1.</span> <span class="toc-text">快表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8"><span class="toc-number">1.5.2.2.</span> <span class="toc-text">多级页表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E6%9C%BA%E5%88%B6%E5%92%8C%E5%88%86%E6%AE%B5%E6%9C%BA%E5%88%B6"><span class="toc-number">1.5.3.</span> <span class="toc-text">分页机制和分段机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91-%E8%99%9A%E6%8B%9F-%E5%9C%B0%E5%9D%80%E5%92%8C%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80"><span class="toc-number">1.5.4.</span> <span class="toc-text">逻辑(虚拟)地址和物理地址</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU%E5%AF%BB%E5%9D%80-%E8%99%9A%E6%8B%9F%E5%AF%BB%E5%9D%80"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">CPU寻址-虚拟寻址</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4%E5%91%A2%EF%BC%9F"><span class="toc-number">1.5.4.1.1.</span> <span class="toc-text">为什么要有虚拟地址空间呢？</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-number">1.6.</span> <span class="toc-text">虚拟内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86"><span class="toc-number">1.6.1.</span> <span class="toc-text">局部性原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8-x2F-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-number">1.6.2.</span> <span class="toc-text">虚拟存储器&#x2F;虚拟内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%9A%84%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.6.3.</span> <span class="toc-text">虚拟内存的技术实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E9%A1%B5%E4%B8%AD%E6%96%AD%E2%80%93%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="toc-number">1.6.4.</span> <span class="toc-text">缺页中断–页面置换算法</span></a></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/13/JVM(Java%20Virtual%20Machine)/" class="archive-article-date">
-  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/13/JVM(Java%20Virtual%20Machine)/">JVM</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java后端//" class="article-tag-list-link color2">Java后端</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="archive-article-date">
-  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">JUC多线程</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java后端//" class="article-tag-list-link color2">Java后端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/13/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="archive-article-date">
-  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/13/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">JUC多线程</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java后端//" class="article-tag-list-link color2">Java后端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/13/JUC/" class="archive-article-date">
-  	<time datetime="2022-06-12T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/13/JUC/">JUC多线程</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java后端//" class="article-tag-list-link color2">Java后端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -416,8 +653,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
